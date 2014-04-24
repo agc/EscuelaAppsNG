@@ -1,0 +1,18 @@
+Aspectos diversos
+
+En Fedora
+
+export NODE_PATH=/usr/lib/node_modules/
+
+sudo systemctl status mongod
+sudo systemctl start mongod
+
+
+sudo tail -f /var/log/mongodb/mongod.log 
+
+A pesar de crearlo, desaparece el directori /var/run/mongodb, donse se crea mongodb.pid
+
+Se crea, con propietarios mongod:mongod
+
+chown mongod:mongod mongodb
+
