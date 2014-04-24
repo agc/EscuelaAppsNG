@@ -1,6 +1,6 @@
 'use strict';
 
-motoAdsApp.controller('NavbarController', function NavbarController($scope, $location) {
+motoAdsApp.controller('NavbarControlador', function($scope, $location) {
 
   $scope.routeIs = function(routeName) {
     return $location.path() === routeName;
@@ -10,6 +10,7 @@ motoAdsApp.controller('NavbarController', function NavbarController($scope, $loc
 
 motoAdsApp.controller('AdvertsController', ['$scope', '$filter', '$window', 'Brand', 'Country', 'Advert',
   function($scope, $filter, $window, Brand, Country, Advert) {
+
     $scope.oneAtATime = true;
 
     $scope.brands = Brand.query();
@@ -32,6 +33,7 @@ motoAdsApp.controller('AdvertsController', ['$scope', '$filter', '$window', 'Bra
     };
 
     $scope.adverts = [];
+
     var allAdverts = Advert.query(filterAdverts);
 
     $scope.filter = {
@@ -71,6 +73,7 @@ motoAdsApp.controller('AdvertsController', ['$scope', '$filter', '$window', 'Bra
 
     function filterAdverts() {
       $scope.adverts = [];
+
       angular.forEach(allAdverts, function(row) {
         if (!$scope.filter.country) {
           $scope.filter.region = null;
@@ -102,7 +105,7 @@ motoAdsApp.controller('AdvertsController', ['$scope', '$filter', '$window', 'Bra
       var removeAdvert = $scope.adverts[idx];
       Advert.remove({advertId: removeAdvert._id}, function() {
         $scope.adverts.splice(idx, 1);
-        alert('Advert removed');
+        alert('Advert eliminado');
       });
     };
 

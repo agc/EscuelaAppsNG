@@ -16,7 +16,7 @@ exportan las funciones usadas en la definición de las rutas
 
  */
 
-require('./rutas')(app);
+
 
 
 
@@ -37,7 +37,7 @@ app.configure(function () {
 });
 
 
-
+require('./rutas')(app); /* Las rutas después de la configuración */
 
 
 http.createServer(app).listen(app.get('port'), function () {

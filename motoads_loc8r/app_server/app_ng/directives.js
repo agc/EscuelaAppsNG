@@ -1,6 +1,7 @@
 'use strict';
 
 var CURRENCY_REGEXP = /^\-?\d+((\.|\,)\d{0,2})?$/;
+
 motoAdsApp.directive('maCurrency', function() {
   return {
     require: 'ngModel',
@@ -46,6 +47,7 @@ motoAdsApp.directive('commentForm', function(Advert) {
       };
 
       scope.sendCommentForm = function() {
+
         var advert = Advert.get({advertId: scope.advertId}, function() {
           advert.comments.push(scope.content);
           Advert.update(advert, function() {

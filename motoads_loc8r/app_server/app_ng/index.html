@@ -10,13 +10,13 @@
 
     <div class="container">
 
-      <div class="navbar" ng-controller="NavbarController">
+      <div class="navbar" ng-controller="NavbarControlador">
         <div class="navbar-inner">
           <a class="brand" href="#/">MotoAds</a>
           <ul class="nav">
             <li ng-class="{active: routeIs('/')}"><a href="#/">Anuncios</a></li>
-            <li ng-class="{active: routeIs('/addAdvert')}"><a
-                href="#/addAdvert">Añadir anuncio</a></li>
+            <li ng-class="{active: routeIs('/addAdvert')}">
+                <a href="#/addAdvert">Añadir anuncio</a></li>
           </ul>
         </div>
       </div>

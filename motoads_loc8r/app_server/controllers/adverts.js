@@ -19,7 +19,7 @@ db.open(function(err, db) {
   }
 });
 
-exports.findAll = function(req, res) {
+module.exports.findAll = function(req, res) {
   db.collection('adverts', function(err, collection) {
     collection.find().toArray(function(err, items) {
       console.log('adverts send from DB');
@@ -28,7 +28,7 @@ exports.findAll = function(req, res) {
   });
 };
 
-exports.findById = function(req, res) {
+module.exports.findById = function(req, res) {
   var id = req.params.id;
   console.log('Retrieving advert: ' + id);
   db.collection('adverts', function(err, collection) {
@@ -38,7 +38,7 @@ exports.findById = function(req, res) {
   });
 };
 
-exports.add = function(req, res) {
+module.exports.add = function(req, res) {
   var advert = req.body;
   console.log('Adding advert: ' + JSON.stringify(advert));
   db.collection('adverts', function(err, collection) {
@@ -53,7 +53,7 @@ exports.add = function(req, res) {
   });
 };
 
-exports.update = function(req, res) {
+module.exports.update = function(req, res) {
   var id = req.params.id;
   var advert = req.body;
   console.log('Updating advert: ' + id);
@@ -72,7 +72,7 @@ exports.update = function(req, res) {
   });
 };
 
-exports.remove = function(req, res) {
+module.exports.remove = function(req, res) {
   var id = req.params.id;
   console.log('Removing advert: ' + id);
   db.collection('adverts', function(err, collection) {
