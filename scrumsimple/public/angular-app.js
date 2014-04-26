@@ -2087,7 +2087,7 @@ angular.module("header.tpl.html", []).run(["$templateCache", function($templateC
     "        </ul>\n" +
     "        <ul class=\"nav pull-right\" ng-show=\"hasPendingRequests()\">\n" +
     "            <li class=\"divider-vertical\"></li>\n" +
-    "            <li><a href=\"#\"><img src=\"/static/img/spinner.gif\"></a></li>\n" +
+    "            <li><a href=\"#\"><img src=\"spinner.gif\"></a></li>\n" +
     "        </ul>\n" +
     "        <login-toolbar></login-toolbar>\n" +
     "    </div>\n" +
