@@ -1,4 +1,4 @@
-var contacts=require('./models/contacts');
+var contacts=require('./models/operacionescontacts');
 
 module.exports=function(app){
 

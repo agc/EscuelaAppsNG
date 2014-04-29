@@ -1,17 +1,5 @@
-var mongoose = require('mongoose');
 
-
-
-var Schema = mongoose.Schema;
-
-var ContactSchema= new Schema({
-    name: { type: String, required: true },
-    phone: { type: Number }
-});
-
-var ContactModel = mongoose.model('Contact', ContactSchema);
-
-
+var ContactModel=require('./modelocontacts.js');
 
 ContactModel.find({id:1},function (error,datos) {
     if(error) console.log("Ha ocurrido un error");
