@@ -1,0 +1,34 @@
+<ul class="list-inline">
+    <li>You have {{contacts.length}} contacts.</li>
+    <li>
+        <div class="input-prepend">
+            <span class="add-on"><span class="glyphicon glyphicon-search"></span></span>
+            <button class="btn btn-info">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+            <input class="span2" id="inputIcon" type="text" placeholder="Search..." ng-model="query">
+        </div>
+    </li>
+    <li>
+        <p>Sorted by: {{columnSort.sortColumn}}</p>
+    </li>
+</ul>
+<div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th ng-repeat="header in headers">
+
+                <a ng-click="columnSort.sortColumn=headers[$index];columnSort.reverse=!columnSort.reverse">{{ headers[$index] | capitalise }}</a>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="contact in contacts | orderBy:columnSort.sortColumn:columnSort.reverse | filter: query">
+            <td><a href="#/contacts/{{ contact._id }}">{{ contact.name }}</a></td>
+            <td>{{ contact.phone }}</td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>

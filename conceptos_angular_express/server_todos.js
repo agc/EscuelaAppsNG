@@ -3,7 +3,7 @@ var express     = require('express');
 var app         = express();
 var port  	    = process.env.PORT || 8080;
 var mongoose    = require('mongoose');
-var database    = require('./app/config/database1');
+var database    = require('./app/config/databasetodos');
 
 mongoose.connect(database.url);
 
@@ -17,7 +17,7 @@ app.configure(function() {
 
 
 
-require('./app/routes')(app);
+require('./app/routes_todos')(app);
 
 
 app.get('/todos', function(req, res) {

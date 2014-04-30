@@ -7,6 +7,15 @@ var Todo = require('./models/todo');
 module.exports = function(app) {
 
 
+    app.get('/api/todos', function(req, res) {
+        Todo.find(function(err, todos) {
+            if(err) {
+                res.send(err);
+            }
+            res.json(todos);
+        });
+    });
+
 
     // create todo and send back all todos after creation
     app.post('/api/todos', function(req, res) {

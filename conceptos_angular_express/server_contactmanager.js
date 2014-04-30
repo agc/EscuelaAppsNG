@@ -9,6 +9,8 @@ require('./app/models/dbcontactmanager');
 
 app.configure(function () {
     app.use(express.bodyParser());
+    app.use(express.static(__dirname + '/public'));
+    app.use(express.static(__dirname + '/app'));
 });
 
 require('./app/routes_contactmanager')(app);
