@@ -6,12 +6,12 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var flash 	 = require('connect-flash');
 
-var configDB = require('./appautentificada/config/database.js');
+var configDB = require('./app_auth/config/db_authdb.js');
 
 
 mongoose.connect(configDB.url);
 
-// require('./appautentificada/config/passport')(passport);
+require('./app_auth/config/passport')(passport);
 
 app.configure(function() {
 
@@ -21,7 +21,7 @@ app.configure(function() {
     app.use(express.bodyParser());  // get information from html forms
 
     app.set('view engine', 'ejs');
-    app.set('views',__dirname+'/appautentificada/views');
+    app.set('views',__dirname+'/app_auth/views');
 
     // required for passport
     app.use(express.session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
@@ -32,7 +32,7 @@ app.configure(function() {
 });
 
 
-require('./appautentificada/routes.js')(app, passport);
+require('./app_auth/routes.js')(app, passport);
 
 
 app.listen(port);

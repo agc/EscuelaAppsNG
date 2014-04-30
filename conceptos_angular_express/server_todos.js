@@ -1,9 +1,9 @@
 
 var express     = require('express');
 var app         = express();
-var port  	    = process.env.PORT || 8080;
+var port  	    = process.env.PORT || 3000;
 var mongoose    = require('mongoose');
-var database    = require('./app/config/databasetodos');
+var database    = require('./app/config/db_tododb');
 
 mongoose.connect(database.url);
 
@@ -21,11 +21,11 @@ require('./app/routes_todos')(app);
 
 
 app.get('/todos', function(req, res) {
-    res.sendfile('./public/todos.html');
+    res.sendfile('./public/indextodos.html');
 });
 
 
 
 
 app.listen(port);
-console.log("App listening on port 8080");
+console.log("App listening on port " + port);

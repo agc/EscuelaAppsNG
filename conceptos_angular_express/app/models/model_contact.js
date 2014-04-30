@@ -1,5 +1,5 @@
 
-var ContactModel=require('./modelocontacts.js');
+var ContactModel=require('./def_model_contact.js');
 
 ContactModel.find({id:1},function (error,datos) {
     if(error) console.log("Ha ocurrido un error");

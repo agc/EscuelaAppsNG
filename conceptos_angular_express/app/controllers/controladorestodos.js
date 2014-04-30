@@ -5,11 +5,15 @@ angular.module('todoController', [])
     .controller('mainController', function($scope, $http, Todos) {
         $scope.formData = {};
 
-
+        // Cuando se cargue la página, pide del API todos los TODOs
         Todos.get()
             .success(function(data) {
                 $scope.todos = data;
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
             });
+        ;
 
 
         $scope.createTodo = function() {

@@ -5,9 +5,9 @@ var app         = express();
 
 var port  	    = process.env.PORT || 3000;
 
-require('./app/models/dbcontactmanager');
+require('./app/conexion/conexion_contacts');
 
-var ContactModel=require('./app/models/modelocontacts.js');
+var ContactModel=require('./app/models/def_model_contact.js');
 
 var contact;
 

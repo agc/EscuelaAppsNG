@@ -1,9 +1,10 @@
 // app/routes.js
 
-// load the todo model
-var Todo = require('./models/todo');
+// carga la definición del modelo
+var Todo = require('./models/def_model_todo');
 
-// expose the routes to our app with module.exports
+// se podría definir un modulo que contenga las operaciones Todo.find Todo.create etc
+// tal y como se hace en la aplicación contact
 module.exports = function(app) {
 
 

@@ -1,4 +1,4 @@
-var database    = require('../config/databasecontact');
+var database    = require('../config/db_contact');
 var mongoose = require('mongoose');
 mongoose.connect(database.url);
 

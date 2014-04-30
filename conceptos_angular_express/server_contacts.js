@@ -4,7 +4,7 @@ var app         = express();
 
 var port  	    = process.env.PORT || 3000;
 
-require('./app/models/dbcontactmanager');
+require('./app/conexion/conexion_contacts');
 
 
 app.configure(function () {
@@ -13,7 +13,7 @@ app.configure(function () {
     app.use(express.static(__dirname + '/app'));
 });
 
-require('./app/routes_contactmanager')(app);
+require('./app/routes_contacts')(app);
 
 
 
