@@ -11,7 +11,12 @@ module.exports=function(alias, directorio,response) {
 
     fs.readdir(pathactual,function(err,files){
 
-        if(err) throw err;
+        if(err) {
+            // la aplicación termina throw err;
+            console.log(err);
+            response.end();
+            return;
+        }
 
         files.forEach(function(file){
 

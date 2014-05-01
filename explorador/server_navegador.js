@@ -12,12 +12,18 @@ app.configure(function() {
 
 var lsdirectorio=require('./lsdirectorio');
 
-app.get('/mostrar', function(req, res) {
+app.get('/mostrar/:alias', function(req, res) {
 
-    lsdirectorio("","/home/agc/Central/Desarrollo/Escuela",res);
+    var directorio=req.query['dir'];
+
+    console.log(req.params.alias);
+
+    //res.charset = 'utf-8';
+
+    lsdirectorio("/home/agc/Central/",directorio,res);
 
 });
 
 
 app.listen(3000);
-console.log("App listening on port 8080");
+console.log("App listening on port 3000");
