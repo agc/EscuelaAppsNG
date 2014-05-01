@@ -1,88 +1,102 @@
-
-
-
 var mongoose = require( 'mongoose' );
-var Tarpen     = mongoose.model( 'Tarpen' );
+var Todo     = mongoose.model( 'Tarpen' );
+var utils    = require( '../../utils' );
 
-exports.create = function ( req, res ){
-    new Tarpen({
+
+exports.index = function ( req, res, next ){
+    var user_id = req.cookies ?
+        req.cookies.user_id : undefined;
+
+    Todo.
+        find({ user_id : user_id }).
+        sort( '-updated_at' ).
+        exec( function ( err, todos ){
+            if( err ) return next( err );
+
+            res.render( 'tarpen/index', {
+                title : 'Express Todo Example',
+                todos : todos
+            });
+        });
+};
+
+exports.create = function ( req, res, next ){
+    new Todo({
+        user_id    : req.cookies.user_id,
         content    : req.body.content,
         updated_at : Date.now()
-    }).save( function( err, todo, count ){
+    }).save( function ( err, todo, count ){
+            if( err ) return next( err );
+
             res.redirect( '/' );
         });
 };
 
+exports.destroy = function ( req, res, next ){
+    Todo.findById( req.params.id, function ( err, todo ){
+        var user_id = req.cookies ?
+            req.cookies.user_id : undefined;
 
-exports.index = function ( req, res ){
-   /*
-     Version sencilla, sin ordenacion
-    Tarpen.find( function ( err, todos, count ){
+        if( todo.user_id !== req.cookies.user_id ){
+            return utils.forbidden( res );
+        }
 
-        res.render( './tarpen/index', {
-            title : 'Express Lista de tareas',
-            todos : todos
-        });
-    });
-
-*/
-
-
-    Tarpen.find().sort('-updated_at').exec
-    ( function ( err, todos, count ){
-        res.render( './tarpen/index', {
-            title : 'Express Lista de tareas',
-            todos : todos
-        });
-    });
-    };
-
-exports.nueva= function(req,res ) {
-    res.render('./tarpen/nueva', { title: 'Nueva tarea' });
-};
-
-
-exports.destroy = function ( req, res ){
-    Tarpen.findById( req.params.id, function ( err, todo ){
         todo.remove( function ( err, todo ){
+            if( err ) return next( err );
+
             res.redirect( '/' );
         });
     });
 };
 
-exports.edit = function ( req, res ){
+exports.edit = function( req, res, next ){
+    var user_id = req.cookies ?
+        req.cookies.user_id : undefined;
 
-    /* version inicial desordenada
+    Todo.
+        find({ user_id : user_id }).
+        sort( '-updated_at' ).
+        exec( function ( err, todos ){
+            if( err ) return next( err );
 
-    Tarpen.find( function ( err, todos ){
-        res.render( './tarpen/edit', {
-            title   : 'Express Todo Example',
-            todos   : todos,
-            current : req.params.id
+            res.render( 'tarpen/edit', {
+                title   : 'Express Todo Example',
+                todos   : todos,
+                current : req.params.id
+            });
         });
-    });
-  */
-
-
-
-    Tarpen.find().sort('-updated_at').exec(
-        function ( err, todos ){
-        res.render( './tarpen/edit', {
-            title   : 'Express Todo Example',
-            todos   : todos,
-            current : req.params.id
-        });
-    });
 };
 
+exports.update = function( req, res, next ){
+    Todo.findById( req.params.id, function ( err, todo ){
+        var user_id = req.cookies ?
+            req.cookies.user_id : undefined;
 
-// redirect to index when finish
-exports.update = function ( req, res ){
-    Tarpen.findById( req.params.id, function ( err, todo ){
+        if( todo.user_id !== user_id ){
+            return utils.forbidden( res );
+        }
+
         todo.content    = req.body.content;
         todo.updated_at = Date.now();
         todo.save( function ( err, todo, count ){
+            if( err ) return next( err );
+
             res.redirect( '/' );
         });
     });
+};
+
+
+
+
+// ** express turns the cookie key to lowercase **
+exports.current_user = function ( req, res, next ){
+    var user_id = req.cookies ?
+        req.cookies.user_id : undefined;
+
+    if( !user_id ){
+        res.cookie( 'user_id', utils.uid( 32 ));
+    }
+
+    next();
 };

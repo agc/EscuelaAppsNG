@@ -22,6 +22,9 @@ var filterUser = function(user) {
 var security = {
   initialize: function(url, apiKey, dbName, authCollection) {
     passport.use(new MongoStrategy(url, apiKey, dbName, authCollection));
+
+
+
   },
   authenticationRequired: function(req, res, next) {
     console.log('authRequired');
