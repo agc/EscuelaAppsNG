@@ -1,0 +1,19 @@
+<% layout( 'layout' ) -%>
+<h1><%= title %></h1>
+<a href="/nueva">Crear una nueva tarea</a>
+
+<h1>Lista de tareas</h1>
+<% todos.forEach( function( todo ){ %>
+<p>
+    <span>
+      <a href="/edit/<%= todo._id %>" title="Update this todo item"><%= todo.content %></a>
+    </span>
+    <span>
+      <a href="/destroy/<%= todo._id %>" title="Borrar este item">Delete</a>
+    </span>
+</p>
+
+<% }); %>
+
+
+</form>
