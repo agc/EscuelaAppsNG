@@ -1,5 +1,13 @@
 exports.addRoutes = function(app, security) {
 
+    /* Middleware para ver que llega la petición
+    app.post("/login", function(req,res,next) {
+        console.log("Llega a login");
+        console.log(JSON.stringify(req.body));
+        return next();
+    })
+    */
+
     app.post('/login', security.login);
     app.post('/logout', security.logout);
 

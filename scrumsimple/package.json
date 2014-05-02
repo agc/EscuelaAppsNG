@@ -1,20 +1,22 @@
 {
-    "name": "motoads_modificada",
-    "version": "0.0.1",
-    "private": true,
-    "scripts": {
-        "start": "node server.js"
-    },
-    "engines": {
-        "node": "0.10.26",
-        "npm": "1.3.11"
-    },
-    "dependencies": {
-        "express": "3.5.1",
-        "passport": "~0.1.12",
-        "passport-local": "~0.1.6",
-        "request": "~2.16.6",
-        "jade": "*",
-        "mongodb": "*"
-    }
+  "name": "motoads_modificada",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "0.10.26",
+    "npm": "1.3.11"
+  },
+  "dependencies": {
+    "express": "3.5.1",
+    "passport": "~0.1.12",
+    "passport-local": "~0.1.6",
+    "request": "~2.16.6",
+    "jade": "*",
+    "mongodb": "*",
+    "mongoose": "~3.8.8",
+    "bcrypt-nodejs": "0.0.3"
+  }
 }

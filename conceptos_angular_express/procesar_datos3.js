@@ -24,11 +24,10 @@ app.get("/",function(req,res) {
         var fs         = require('fs');
         var datos;
 
-        console.log("Llega");
 
         ContactModel.count({},function (err,count) {
 
-            console.log("Llega");
+
 
             if (err) {
                 console.log("Hay un error");
