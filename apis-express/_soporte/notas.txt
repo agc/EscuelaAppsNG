@@ -1,0 +1,28 @@
+Uso de Postman
+
+Para mandar un post es muy comodo el método x-www-form-urlencoded
+
+Si se quiere enviar JSON se debe añadir cabeceras
+
+Content-Type        application/json
+Accept              appliation/json
+
+no se si son necesarias las dos
+
+Si están presentes estas cabeceras no funciona el método x-www-form-urlencoded
+
+
+mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]].
+
+El middleware path ejecuta una acción cuan un :parametro siempre que aparezca en la url
+
+
+The app.param() method is another Express.js middleware.
+It basically says “do something every time there is this value in the URL pattern of the request handler”.
+In our case, we select a particular collection when request pattern contains a sting collectionName prefixed
+with a colon (you’ll see it later in the routes). Then, we save that collection as a property (collection but could be anything)
+of the request object (widespread req), which will be available in the next request handlers:
+
+Entonces, cuando aparece un nombre en la posición de la url marcada en la ruta por :collectionName se instancia una
+base de datos y se guarda en el request
+

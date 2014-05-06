@@ -16,6 +16,10 @@ app.get('/cptosangular', function(req, res) {
     res.sendfile('./public/cptos_angularjs1.html'); // load the single view file (angular will handle the page changes on the front-end)
 });
 
+app.get('/restangular1', function(req, res) {
+    res.sendfile('./public/restangular1.html'); // load the single view file (angular will handle the page changes on the front-end)
+});
+
 
 app.listen(8080);
 console.log("App listening on port 8080");
