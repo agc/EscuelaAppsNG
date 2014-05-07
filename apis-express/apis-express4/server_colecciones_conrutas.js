@@ -21,19 +21,37 @@ app.use(bodyParser());
 app.use(express.static(__dirname + '/public'));
 
 
-app.param('collectionName', function(req, res, next, collectionName){
+
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+        res.send(200);
+    }
+    else {
+        next();
+    }
+};
+
+
+router.param('collectionName', function(req, res, next, collectionName){
     req.collection = db.collection(collectionName)
-    console.log("Detectada nombre de coleccion")
+    console.log("Detectada " + collectionName)
     return next()
 })
 
 
+router.use(allowCrossDomain);
 
 
 // middleware ejemplo, se usa en todos los requests
+// también existe para app
 app.use(function(req, res, next) {
 
-    console.log('Se ha realizado una operación.');
+    console.log('Se ha realizado una operación en una colección.');
     next();
 });
 
@@ -51,7 +69,7 @@ app.get('/api', function(req, res) {
     res.json({ message: 'hooray! welcome to our api!' });
 });
 
-router.route('/')
+router.route('/:collectionName')
 .get(
     function(req, res) {
     req.collection.find({} ,{limit:10, sort: [['_id',-1]]}).toArray(
@@ -70,7 +88,7 @@ router.route('/')
     })
 });
 
-router.route('/:id')
+router.route('/:collectionName/:id')
 .get( function(req, res) {
     req.collection.findById(req.params.id, function(e, result){
         if (e)  res.send(e);
@@ -91,7 +109,7 @@ router.route('/:id')
         })
     });
 
-app.use('/api/:collectionName', router);
+app.use('/api', router);
 
 
 
