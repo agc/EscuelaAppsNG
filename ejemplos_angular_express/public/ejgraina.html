@@ -1,0 +1,73 @@
+<!doctype html>
+<html ng-app="Hubbub">
+<head>
+    <title>Hubbub &raquo; </title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/hubbub.css" />
+    <script src="js/lib/angular-1.0.8.js"></script>
+    <script src="js/lib/restangular-1.1.3.js"></script>
+    <script type="text/javascript" src="js/lib/lodash-2.2.0.js"></script>
+
+    <script src="js/lib/hubbub.js"></script>
+
+</head>
+<body >
+<div>
+    <div id="hd">
+        <img src="images/headerlogo.png" alt="hubbub logo"/>
+
+    </div>
+    <div id="bd"><!-- start body -->
+
+
+        <div id="newPost">
+
+            <h3>
+                ¿Qué está haciendo ahora? hacking ?
+            </h3>
+
+            <form ng-controller="NewPostCtrl">
+
+                <textarea id='postContent' ng-model="postContent"
+                          ng-class="{'charsLow' : charsRemaining() < 12, 'charsOverflow' : charsRemaining() < 0}">
+
+                </textarea>
+                <button ng-click="newPost()" ng-disabled="postInvalidLength()">Post</button>
+                <span id='charsRemaining'>{{charsRemaining()}}</span>
+
+            </form>
+
+
+        </div>
+
+        <div class="allPosts" ng-controller="PostsCtrl" ng-cloak>
+
+            <div class="postEntry" ng-repeat="post in allPosts" ng-controller="EditPostCtrl"
+                 ng-mouseenter="activate()"
+                 ng-mouseleave="deactivate()">
+
+            <span ng-show="isEditState">
+                <textarea class="inplacePostEdit" ng-model="editedContent"></textarea>
+                <button ng-click="updatePost()">Update</button>
+                <button ng-click="deletePost()">Delete</button>
+            </span>
+
+            <span ng-show="!isEditState">
+                <div class="postText">{{post.message}}</div>
+                <div class="postDate">{{post.published}} by {{post.user}}</div>
+            </span>
+
+            </div>
+
+        </div>
+
+
+
+    </div>  <!-- end body -->
+    <div id="ft">
+        <div id="footerText">Hubbub - Social Networking on Grails</div>
+    </div>
+</div>
+
+</body>
+</html>

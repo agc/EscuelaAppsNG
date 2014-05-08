@@ -33,6 +33,12 @@ router.route('/ejrestang1')
         res.sendfile('./public/ejrestangular1.html');
     });
 
+router.route('/ejgraina')
+
+    .get( function (req, res) {
+        res.sendfile('./public/ejgraina.html');
+    });
+
 // si definimos app.use('/ejemplos',router)
 // si lo servimos asi busca los elementos  precedidos por la ruta /ejemplos
 // por ello app.use('/',router)
