@@ -9,7 +9,8 @@ var app=angular
     'ngRoute'
   ]);
 
- app.constant("postUrl","http://192.168.1.82:3000/api/posts/");
+ //app.constant("postUrl","http://192.168.1.60:3000/api/posts/");
+app.constant("postUrl","api/posts/");
 
   app.config(function ($routeProvider) {
     $routeProvider

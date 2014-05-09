@@ -1,7 +1,3 @@
-// server.js
-
-// copiado de http://webapplog.com/express-js-4-node-js-and-mongodb-rest-api-tutorial/
-
 
 var express    = require('express');
 var app        = express();
@@ -15,6 +11,7 @@ var port       = process.env.PORT || 8080;
 app.use(bodyParser());
 
 app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/app'));
 
 
 
@@ -24,10 +21,12 @@ app.use(function(req, res, next) {
     next();
 });
 
+var router = express.Router();
 
+require('./rutas_rest_mongoose')('/api',router,app);
 
 app.get('/news', function(req, res) {
-    res.sendfile('./public/indexnews.html');
+    res.sendfile('./app/indexnews.html');
 });
 
 app.get('/', function(req, res) {
