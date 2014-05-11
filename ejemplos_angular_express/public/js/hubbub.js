@@ -35,7 +35,7 @@ function PostsCtrl($scope, Restangular) {
 
     $scope.$on('deletePost', function(event, postToDelete) {
         $scope.allPosts = _.filter($scope.allPosts, function(nextPost) {
-            return nextPost.id != postToDelete;
+            return nextPost.id != postToDelete.id;
         });
     });
 
@@ -103,13 +103,14 @@ function EditPostCtrl($scope, $rootScope, Restangular) {
     $scope.deletePost = function() {
 
         isEditState = false;
-        var actual= Restangular.one('posts', $scope.id);
+        var actual= Restangular.one('posts', $scope.id).get();
+        $scope.id=actual.id;
         $scope.post.message = $scope.editedContent;
 
         actual.remove().then(
             function(response) {
 
-               $rootScope.$broadcast("deletePost", $scope.id);
+               $rootScope.$broadcast("deletePost", actual.id);
             }, function(errorResponse) {
 
                 alert("Error saving object:" + errorResponse.status);

@@ -44,19 +44,18 @@ module.exports= function(prefijoruta,router,app) {
     router.route('/posts/:id')
         .get( function(req, res) {
             return Modelo.findById(req.params.id, function (err, post) {
-                post.url = req.body.url;
-                post.title = req.body.title;
-                post.save(function (err) {
+
+
                     if (!err) {
-                        console.log("updated");
+                        res.jsonp(post);
                     } else {
                         console.log(err);
                     }
-                    res.jsonp(post);
+
                 });
 
 
-        })})
+        })
            .delete( function (req, res){
 
                 return Modelo.findById(req.params.id, function (err, post) {

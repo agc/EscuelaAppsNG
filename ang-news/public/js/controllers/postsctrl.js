@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('PostsCtrl', function ($scope,$resource,Post,postUrl) {
+app.controller('PostsCtrl', function ($scope,$resource,Post,postUrl,$location) {
 
     $scope.posts = {}; //version inicial
 
@@ -28,6 +28,7 @@ app.controller('PostsCtrl', function ($scope,$resource,Post,postUrl) {
             $scope.posts.datos.push(nuevoPost);
 
             $scope.post = {url: 'http://', title: ''};
+            $location.path('/posts/'+nuevoPost._id)
 
             return ;
         });
