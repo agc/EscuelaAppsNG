@@ -1,6 +1,8 @@
-angular.module('Hubbub', ['restangular']).config(
-    function(RestangularProvider) {
-        RestangularProvider.setBaseUrl('http://192.168.1.61:3000/api');
+angular.module('Hubbub', ['restangular']).
+    constant("apiUrl",'http://192.168.1.61:3000/api').
+    config(
+    function(RestangularProvider,apiUrl) {
+        RestangularProvider.setBaseUrl(apiUrl);
 //        RestangularProvider.setRequestInterceptor(function(elem, operation, what) {
 //            var retElem = elem;
 //            if (operation === 'put') {
@@ -33,7 +35,7 @@ function PostsCtrl($scope, Restangular) {
 
     $scope.$on('deletePost', function(event, postToDelete) {
         $scope.allPosts = _.filter($scope.allPosts, function(nextPost) {
-            return nextPost.id != postToDelete.id
+            return nextPost.id != postToDelete;
         });
     });
 
@@ -69,6 +71,8 @@ function EditPostCtrl($scope, $rootScope, Restangular) {
 
     $scope.isEditState = false;
 
+    $scope.id=$scope.post._id;
+
     $scope.activate= function() {
         $scope.isEditState = true;
     }
@@ -83,10 +87,10 @@ function EditPostCtrl($scope, $rootScope, Restangular) {
     $scope.updatePost = function() {
 
         isEditState = false;
-
+        var actual= Restangular.one('posts', $scope.id);
         $scope.post.message = $scope.editedContent;
-        $scope.post.put().then(
-            function() {
+        actual.put().then(
+            function(response) {
                 $scope.isEditState = false;
             }, function(errorResponse) {
                 $scope.post.message = $scope.originalContent; // reset back content
@@ -99,12 +103,15 @@ function EditPostCtrl($scope, $rootScope, Restangular) {
     $scope.deletePost = function() {
 
         isEditState = false;
-
+        var actual= Restangular.one('posts', $scope.id);
         $scope.post.message = $scope.editedContent;
-        $scope.post.remove().then(
-            function() {
-                $rootScope.$broadcast("deletePost", $scope.post);
+
+        actual.remove().then(
+            function(response) {
+
+               $rootScope.$broadcast("deletePost", $scope.id);
             }, function(errorResponse) {
+
                 alert("Error saving object:" + errorResponse.status);
             }
         );

@@ -8,7 +8,7 @@
     <script src="js/lib/restangular-1.1.3.js"></script>
     <script type="text/javascript" src="js/lib/lodash-2.2.0.js"></script>
 
-    <script src="js/lib/hubbub.js"></script>
+    <script src="js/hubbub.js"></script>
 
 </head>
 <body >
@@ -47,9 +47,10 @@
                  ng-mouseleave="deactivate()">
 
             <span ng-show="isEditState">
+              ___  {{id}}---
                 <textarea class="inplacePostEdit" ng-model="editedContent"></textarea>
-                <button ng-click="updatePost()">Update</button>
-                <button ng-click="deletePost()">Delete</button>
+                <button ng-click="updatePost()">Actualizar</button>
+                <button ng-click="deletePost()">Borrar</button>
             </span>
 
             <span ng-show="!isEditState">

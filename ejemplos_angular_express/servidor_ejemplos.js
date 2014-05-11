@@ -22,7 +22,7 @@ app.use(function (req, res, next) {
 
 
 app.get('/', function (req, res) {
-    res.json({ message: 'algunar rutas /ejemplos/restangular1' });
+    res.json({ message: 'algunas rutas /ejrestangular1 /ejgraina' });
 })
 
 // se invoca como archivo estatico no con esta ruta

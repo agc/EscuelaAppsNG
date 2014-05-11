@@ -1,0 +1,14 @@
+agc@secesion ~$ sudo mkdir /var/run/mongodb
+[sudo] password for agc:
+agc@secesion ~$ sudo chown mongod:mongod /var/run/mongodb
+agc@secesion ~$ sudo systemctl start mongod
+agc@secesion ~$ sudo systemctl status mongod
+
+
+Se necesita que funcione en el puerto 3000 el proceso que gestiona datos
+
+en apis-express/apis-express4
+
+server_colecciiones_conrutas
+
+colecciones_conrutas

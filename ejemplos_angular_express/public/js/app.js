@@ -1,5 +1,6 @@
 angular.module('project', ['restangular', 'ngRoute']).
-    config(function($routeProvider, RestangularProvider) {
+    constant("apiUrl",'http://192.168.1.61:3000/api').
+    config(function($routeProvider, RestangularProvider,apiUrl) {
         $routeProvider.
             when('/', {
                 controller:ListCtrl,
@@ -24,7 +25,7 @@ angular.module('project', ['restangular', 'ngRoute']).
             id: '_id.$oid'
         });
         */
-        RestangularProvider.setBaseUrl('http://192.168.1.61:3000/api');
+        RestangularProvider.setBaseUrl(apiUrl);
 
 
         RestangularProvider.setRequestInterceptor(function(elem, operation, what) {

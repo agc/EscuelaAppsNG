@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <title>AngularJS y Restangular</title>
-    <script>document.write('<base href="' + document.location + '" />');</script>
+
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.js"></script>
@@ -17,8 +17,8 @@
 
 <body>
 <div ng-app="project">
-    <h4><a target="_blank" href="https://github.com/mgonto/restangular">Ejemplo Restangular: hacer click para descargar la librería</a></h4>
-    <h4>Proyectos JavaScript <a href="http://angularjs.org/#wire-up-a-backend" target="_blank">Basados en  una muestra de on AngularJS's</a></h4>
+    <h4>Ejemplo Restangular: hacer click para descargar la librería</h4>
+
     <div ng-view></div>
 
 
@@ -51,24 +51,22 @@
     <!-- CACHE FILE: detail.html -->
     <script type="text/ng-template" id="detail.html">
         <p>Proyecto id :{{project._id}}</p>
+
         <form name="myForm">
             <div class="control-group" ng-class="{error: myForm.name.$invalid}">
                 <label>Name</label>
                 <input type="text" name="name" ng-model="project.name" required>
-          <span ng-show="myForm.name.$error.required" class="help-inline">
-              Required</span>
+          <span ng-show="myForm.name.$error.required" class="help-inline"> Campo obligatorio</span>
             </div>
 
             <div class="control-group" ng-class="{error: myForm.site.$invalid}">
                 <label>Website</label>
                 <input type="url" name="site" ng-model="project.site" required>
-          <span ng-show="myForm.site.$error.required" class="help-inline">
-              Required</span>
-          <span ng-show="myForm.site.$error.url" class="help-inline">
-              Not a URL</span>
+          <span ng-show="myForm.site.$error.required" class="help-inline">Campo obligatorio</span>
+          <span ng-show="myForm.site.$error.url" class="help-inline">No es una url http://....</span>
             </div>
 
-            <label>Description</label>
+            <label>Descripción</label>
             <textarea name="description" ng-model="project.description"></textarea>
 
             <br>
@@ -77,6 +75,7 @@
             <button ng-click="destroy()"
                     ng-show="project._id" class="btn btn-danger">Delete</button>
         </form>
+
     </script>
 </div>
 
