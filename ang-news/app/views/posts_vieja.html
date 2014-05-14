@@ -1,0 +1,15 @@
+
+<div ng-repeat="post in posts.datos">
+    <a href="{{ post.url }}">{{ post.title }}</a>
+    <a href="#/posts/{{ post._id }}">comments</a>
+    <a ng-click='deletePost(post)'>Borrar</a>
+</div>
+
+<!-- no se usa, ahora se ha llevado a nav.html
+<form ng-submit='submitPost()'>
+<input type="text" ng-model="post.title" />
+<input type="text" ng-model="post.url" />
+<input type="submit" value="Add Post" />
+</form>
+-->
+<br />

@@ -16,6 +16,9 @@ app.controller('PostsCtrl', function ($scope,$resource,Post,postUrl,$location) {
 
     $scope.post = {url: 'http://', title: ''};
 
+    // este método es innecesario, ahora se manda desde navctrl.js
+
+
     $scope.submitPost = function () {
 
 
