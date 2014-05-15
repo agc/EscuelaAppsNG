@@ -5,6 +5,6 @@ app.controller('PostViewCtrl', function ($scope,$resource, $routeParams,postUrl,
      console.log(postUrl);
      var post = $resource(postUrl+":id",{id:$routeParams.postId});
     $scope.post={}
-     $scope.post.datos=post.get()
+     $scope.post=post.get()
 
 });

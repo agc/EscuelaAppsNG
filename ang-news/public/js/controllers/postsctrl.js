@@ -1,16 +1,39 @@
 'use strict';
 
-app.controller('PostsCtrl', function ($scope,$resource,Post,postUrl,$location) {
+app.controller('PostsCtrl', function ($scope,$resource,Post,postUrl,$location,estado) {
 
-    $scope.posts = {}; //version inicial
+
+    // scope.posts tiene una referencia a un objeto
+    // en el servicio estado estado.posts puede modificarse y referirse a otro objeto
+    // scope.posts seguirá haciendo referencia al anterior
+    $scope.posts = estado.posts;
+
+    $scope.$on('estado.actualizado', function (event,postsnuevos) {
+
+        $scope.posts =  estado.posts
+
+    });
+
+    $scope.$on('post.nuevo', function (event,postnuevo) {
+        alert("Post incluido");
+        //$scope.posts = estado.posts; como es una referencia se actualiza en estado
+
+    });
+
+
 
     $scope.postResource= $resource(postUrl+':id',{id:"@id"}); // es innecesario, se puede usar en vez de Post
 
-    $scope.listPosts= function() {
-        Post.query(function(posts) {$scope.posts.datos=posts});
-    };
+    $scope.leerPostsEnBD= function() {
 
-    $scope.listPosts();
+        Post.query(function(posts) {
+
+
+            estado.definirPosts(posts);
+    });
+    }
+
+    $scope.leerPostsEnBD();
 
 
 
@@ -21,20 +44,17 @@ app.controller('PostsCtrl', function ($scope,$resource,Post,postUrl,$location) {
 
     $scope.submitPost = function () {
 
+        var newPost=new Post($scope.post);// new $scope.postResource($scope.post);
 
+            newPost.$save().then(function(nuevoPost) {
 
-    var newPost=new Post($scope.post);// new $scope.postResource($scope.post);
+                estado.incluirPost(nuevoPost);
 
-        newPost.$save().then(function(nuevoPost) {
+                $scope.post = {url: 'http://', title: ''};
+               // $location.path('/posts/'+nuevoPost._id)
 
-
-            $scope.posts.datos.push(nuevoPost);
-
-            $scope.post = {url: 'http://', title: ''};
-            $location.path('/posts/'+nuevoPost._id)
-
-            return ;
-        });
+                return ;
+            });
 
     };
 
@@ -43,8 +63,7 @@ app.controller('PostsCtrl', function ($scope,$resource,Post,postUrl,$location) {
     $scope.deletePost = function (post) {
 
 
-
-       Post.remove({"id":post._id} , function (response) {$scope.posts.datos.splice($scope.posts.datos.indexOf(post), 1);})
+       Post.remove({"id":post._id} , function (response) {$scope.posts.splice($scope.posts.indexOf(post), 1);})
 
         };
 

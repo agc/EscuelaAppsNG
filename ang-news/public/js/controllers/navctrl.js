@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('NavCtrl', function ($scope, $location, Post) {
+app.controller('NavCtrl', function ($scope, $location, Post,estado) {
     $scope.post = {url: 'http://', title: ''};
 
 
@@ -13,11 +13,10 @@ app.controller('NavCtrl', function ($scope, $location, Post) {
 
         newPost.$save().then(function(nuevoPost) {
 
-
-            $scope.posts.datos.push(nuevoPost);
+            estado.incluirPost(nuevoPost);
 
             $scope.post = {url: 'http://', title: ''};
-            $location.path('/posts/'+nuevoPost._id)
+           // $location.path('/posts/'+nuevoPost._id)
 
             return ;
         });

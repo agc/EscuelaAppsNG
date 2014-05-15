@@ -59,6 +59,7 @@ module.exports= function(prefijoruta,router,app) {
            .delete( function (req, res){
 
                 return Modelo.findById(req.params.id, function (err, post) {
+                    
                     return  post.remove(function (err) {
                         if (!err) {
                             console.log("removed");
