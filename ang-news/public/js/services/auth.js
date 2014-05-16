@@ -5,18 +5,22 @@ app.factory('Auth',
 
 
         var Auth = {
+
+             //user :{email:"agalveca@gmail.com",password:"*********"},
+             user:{email:"agalveca@gmail.com",password:"****"},
             register: function (user) {
 
                // return auth.$createUser(user.email, user.password);
             },
             signedIn: function () {
-              //  return auth.user !== null;
+               //return this.user !== null;
+                return !( _.isEmpty(this.user));
             },
             login: function (user) {
-               // return auth.$login('password', user);
+               this.user=user;
             },
             logout: function () {
-              //  auth.$logout();
+              this.user={}
             }
         };
 
