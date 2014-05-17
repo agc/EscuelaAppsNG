@@ -6,10 +6,7 @@ mongoose.connect('mongodb://localhost:27017/nodetest2');
 
 var Modelo= require('./models/postmodel')('post');
 
-
-
 module.exports= function(prefijoruta,router,app) {
-
 
    router.route('/posts')
         .get(
