@@ -27,4 +27,8 @@ app.controller('NavCtrl', function ($scope, $location, Post,estado,Auth) {
 
     };
 
+    $scope.logout = function () {
+        Auth.logout();
+    };
+
 });
