@@ -1,25 +1,41 @@
-var
+var MongoClient         = require('mongodb').MongoClient,
+    Server              = require('mongodb').Server,
+    CollectionDriver    = require('./collectiondriver').CollectionDriver,
+    mongoHost           = 'localHost',
+    mongoPort           = 27017,
+    baseDeDatos         ="nodetest2";
 
-    MongoClient = require('mongodb').MongoClient,
-    Server = require('mongodb').Server;
-
-var mongoHost = 'localHost';
-var mongoPort = 27017;
-var baseDeDatos="nodetest2";
-var db;
 
 var mongoClient = new MongoClient(new Server(mongoHost, mongoPort));
 
-mongoClient.open(function(err, mongoClient) {
-    if (!mongoClient) {
-        console.error("Error! Exiting... Must start MongoDB first");
-        process.exit(1);
-    }
-     db = mongoClient.db(baseDeDatos);
 
 
+// para evitar tener que escribir todo elcodigo en diversas
+// funciones callback se usa la libreria q de promises
+// npm install q o incluirlo en packages.json
 
-});
+// La clase collectionDriver implementa una serie de operaciones
+// de manera bastante generica, para cualquier colección
 
-exports.db=db;
+
+module.exports=function (){
+    var Q = require('q')
+    var deferred = Q.defer();
+
+    mongoClient.open(function(err, mongoClient) {
+        if (!mongoClient) {
+
+            deferred.reject("No se ha podido obtener un monglclient")
+        }
+        else {
+            db = mongoClient.db(baseDeDatos);
+            collectionDriver = new CollectionDriver(db);
+            deferred.resolve(collectionDriver);
+        }
+
+    });
+
+    return deferred.promise;
+
+};
 

@@ -24,6 +24,9 @@ var router = express.Router();
 
 require('./rutas_rest_mongoose')('/api',router,app);
 var User =require('./models/usuariomodel');
+var promesaCollectionDriver= require("./mongodriver/db")();
+
+
 
 app.get('/news', function(req, res) {
     res.sendfile('./app/indexnews.html');
@@ -32,6 +35,32 @@ app.get('/news', function(req, res) {
 app.get('/', function(req, res) {
     res.json({ message: 'seleccionar una coleccion, ej /api/bears!' });
 });
+
+promesaCollectionDriver.then(
+    function (cdrv) {
+
+
+
+        app.get('/:collection', function(req, res) {
+            var params = req.params;
+            cdrv.findAll(req.params.collection, function(error, objs) {
+                if (error) { console.log( error); }
+                else {
+                    res.jsonp(objs);
+
+                }
+            });
+        });
+
+    },
+
+    function (error) {
+        console.log("Llega")
+        console.log(error)
+    }
+
+);
+
 
 app.get('/api/users',
 
