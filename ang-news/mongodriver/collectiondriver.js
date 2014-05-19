@@ -1,5 +1,6 @@
 // codigo copiado de http://www.raywenderlich.com/61078/write-simple-node-jsmongodb-web-service-ios-app
 
+// TODO comprobar que los ID son correctos
 
 var ObjectID = require('mongodb').ObjectID;
 
@@ -48,6 +49,46 @@ CollectionDriver.prototype.get = function(collectionName, id, callback) { //A
             var checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$"); //B
             if (!checkForHexRegExp.test(id)) callback({error: "invalid id"});
             else the_collection.findOne({'_id':ObjectID(id)}, function(error,doc) { //C
+                if (error) callback(error);
+                else callback(null, doc);
+            });
+        }
+    });
+};
+
+CollectionDriver.prototype.save = function(collectionName, obj, callback) {
+    this.getCollection(collectionName, function(error, the_collection) {
+        if( error ) callback(error)
+        else {
+            obj.created_at = new Date();
+            the_collection.insert(obj, function() {
+                callback(null, obj);
+            });
+        }
+    });
+};
+
+//update a specific object
+CollectionDriver.prototype.update = function(collectionName, obj, entityId, callback) {
+    this.getCollection(collectionName, function(error, the_collection) {
+        if (error) callback(error);
+        else {
+            obj._id = ObjectID(entityId); // convert to a real obj id
+            obj.updated_at = new Date();
+            the_collection.save(obj, function(error,doc) {
+                if (error) callback(error);
+                else callback(null, obj);
+            });
+        }
+    });
+};
+
+//delete a specific object
+CollectionDriver.prototype.delete = function(collectionName, entityId, callback) {
+    this.getCollection(collectionName, function(error, the_collection) {
+        if (error) callback(error);
+        else {
+            the_collection.remove({'_id':ObjectID(entityId)}, function(error,doc) {
                 if (error) callback(error);
                 else callback(null, doc);
             });
