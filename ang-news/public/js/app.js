@@ -12,6 +12,8 @@ var app=angular
  //app.constant("postUrl","http://192.168.1.60:3000/api/posts/");
 app.constant("postUrl","api/posts/");
 
+app.constant("usuarioUrl","api/usuarios/")
+
   app.config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -29,6 +31,10 @@ app.constant("postUrl","api/posts/");
         .when('/login', {
             templateUrl: 'views/login.html',
             controller: 'AuthCtrl'
+        })
+        .when('/usuarios', {
+            templateUrl: 'views/usuarios.html',
+            controller: 'UsuarioCtrl'
         })
       .otherwise({
         redirectTo: '/'
