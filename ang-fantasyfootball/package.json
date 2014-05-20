@@ -10,9 +10,13 @@
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --reporter spec test/test-*.js"
 }
     , "dependencies": {
-    "express": "latest"
+     "express": "latest"
     , "jade": "latest"
     , "mongoose": "latest"
+    , "mongodb":"*"
+    , "connect":"*"
+    , "session":"*"
+    , "express-session":"*"
     , "connect-mongo": "latest"
     , "connect-flash": "latest"
     , "passport": "latest"
@@ -30,6 +34,14 @@
     , "forever": "latest"
     , "mean-logger": "latest"
     , "bower": "latest"
+    ,"static-favicon": "~1.0.0"
+    ,"morgan": "*"
+    ,"cookie-parser": "*"
+    ,"body-parser": "*"
+    , "connect-flash":"*"
+    , "view-helpers":"*"
+    , "method-override":"*"
+    ,"compression":"*"
 }
     , "devDependencies": {
     "supertest": "latest"
