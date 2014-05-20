@@ -32,7 +32,9 @@ app.get('/', function(req, res) {
     res.json({ message: 'seleccionar una coleccion, ej /api/bears!' });
 });
 
-require('./rutas_rest_drivermongo')(app);
+//require('./rutas_rest_drivermongo')(app);
+
+require('./drivermongo/rutas_driver_mongo')(app);
 
 
 

@@ -1,19 +1,19 @@
 // copiado de http://joedoyle.us/A-Pattern-for-Connecting-to-MongoDB-in-an-Express-App
 // elimino replicaSet
 
-var Q = require('Q'),
+var Q = require('q'),
     MongoClient = require('mongodb').MongoClient,
     ObjectId = require('mongodb').ObjectID,
     Server = require('mongodb').Server,
     ReplSet = require('mongodb').ReplSet;
 _ = require('underscore');
 
-var mongoHost           = 'localHost',
-    mongoPort           = 27017,
-    baseDeDatos         ="nodetest2";
 
-var Database = function(server, database) {
+
+var Database = function(server, port, database) {
+
     this.server = server;
+    this.port=port;
     this.database = database;
 };
 
@@ -25,15 +25,18 @@ var Database = function(server, database) {
 
 Database.prototype.connect = function(collections,callback_error) {
     var self = this;
-    var connectionString = "mongodb://" + this.server + "/" + this.database ;
+    var connectionString = "mongodb://" + this.server +":"+this.port+ "/" + this.database ;
+
     return Q.nfcall(MongoClient.connect, connectionString)
-        .then(function(db) {
+        .then(
+        function(db) {
+
             _.each(collections, function(collection) {
                 self[collection] = db.collection(collection);
             });
 
             return db;
-        },callback_error("BD: error de conexion"));
+        });
 };
 
 

@@ -1,24 +1,20 @@
 
 
 <div class="container posts-page">
-   
-    <div class="post row" ng-repeat="post in posts">
+   <p>Lista de usuarios</p>
+    <div><p>Informacion</p><br><p>{{mensaje }}</p></div><br></div>
+    <div class="post row" ng-repeat="usuario in usuarios">
 
         <div class="col-xs-1">
 
         </div>
         <div class="col-md-9 col-xs-11">
+           <div>
+               {{usuario._id}}
+               {{usuario.email}}<br>
+               {{usuario.password}}
+           </div>
 
-            <div class="info">
-                <a href="{{ post.url }}">
-                    {{ post.title }}
-                    <span class="url">({{ post.url | hostnameFromUrl }})</span>
-                </a>
-            </div>
-            <div>
-                <a href="#/posts/{{ post._id }}">Comentarios</a>
-                <a ng-click="deletePost(post)">Borrar</a>
-            </div>
         </div>
         <div class="col-md-2">
 

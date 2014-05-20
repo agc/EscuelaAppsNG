@@ -22,13 +22,17 @@ app.controller('AuthCtrl',
             });
         };
 
+        //Auth.register comprueba si existe el usuario
+        // si no existe invoca la función que se pasa a then
+
         $scope.register = function() {
-            Auth.register($scope.user).then(function (authUser) {
+            Auth.register($scope.user).then(
+                function (authUser) {
                 console.log(authUser);
               //  User.create(authUser, $scope.user.username);
                 $location.path('/');
             }, function (error) {
-               // $location.path('/');
+               //d $location.path('/');
                 $scope.error = error.toString();
             });
         };

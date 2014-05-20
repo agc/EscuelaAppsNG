@@ -12,6 +12,7 @@ var ObjectID = require('mongodb').ObjectID;
 
 //db devuelto por el procedimiento de conexión a mongo
 CollectionDriver = function(db) {
+
     this.db = db;
 };
 
@@ -96,4 +97,4 @@ CollectionDriver.prototype.delete = function(collectionName, entityId, callback)
     });
 };
 
-exports.CollectionDriver = CollectionDriver;
+module.exports = CollectionDriver;
