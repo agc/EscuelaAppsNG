@@ -43,8 +43,6 @@ module.exports = function (app, passport, auth) {
 
     // home route
     var index = require('../app/controllers/index')
-    app.get('/', function(req,res) {
-
-        res.render('index')})
+    app.get('/', index.render)
 
 }

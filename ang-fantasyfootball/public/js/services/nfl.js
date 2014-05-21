@@ -1,4 +1,4 @@
-window.angular.module('ngff.services.nfl', [])
+angular.module('ngff.services.nfl', [])
     .factory('NFL', function() {
         var NFL = {};
         NFL.teams = [

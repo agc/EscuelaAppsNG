@@ -3,14 +3,14 @@ var express = require('express')
 var session    = require('express-session');
 var mongoStore = require('connect-mongo')(session);
 
-var   flash = require('connect-flash')
-    , helpers = require('view-helpers')
-    , bodyParser= require('body-parser')
-    , cookieParser= require('cookie-parser')
+var   flash         = require('connect-flash')
+    , helpers       = require('view-helpers')
+    , bodyParser    = require('body-parser')
+    , cookieParser  = require('cookie-parser')
     , methodOverride=require('method-override')
-    , favicon= require('static-favicon')
-    , compress= require('compression')
-    , morgan= require('morgan')
+    , favicon       = require('static-favicon')
+    , compress      = require('compression')
+    , morgan        = require('morgan')
 
 
 
@@ -68,7 +68,7 @@ module.exports = function (app, config, passport) {
      app.use(passport.session())*/
 
     // routes should be at the last
-    // app.use(app.router); no funciona las rutas se ejecutan en el orden en el que se han insertado
+    // app.use(app.router); no funciona en express 4 las rutas se ejecutan en el orden en el que se han insertado
 
 
 

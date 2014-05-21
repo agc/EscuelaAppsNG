@@ -1,6 +1,7 @@
-window.angular.module('ngff.controllers.nfl', [])
+angular.module('ngff.controllers.nfl', [])
     .controller('NFLController', ['$scope','$routeParams','Global','NFL',
         function($scope, $routeParams, Global, NFL) {
+            $scope.mensaje="Hola"
             $scope.global = Global;
 
             $scope.nflteams = NFL.teams;
