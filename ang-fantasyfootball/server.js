@@ -4,39 +4,31 @@
  * MIT Licensed
  */
 
-/**
- * Module dependencies.
- */
 
-var express = require('express')
-    , fs = require('fs')
-    , passport = require('passport')
-    , logger = require('mean-logger')
+var express     = require('express')
+    , fs        = require('fs')
+    , passport  = require('passport')
+    , logger    = require('mean-logger')
 
-/**
- * Main application entry file.
- * Please note that the order of loading is important.
- */
 
-// Load configurations
-// if test env, load example file
-var env = process.env.NODE_ENV || 'development'
-    , config = require('./config/config')[env]
+var env         = process.env.NODE_ENV || 'development'
+    , config    = require('./config/config')[env]
 
-   // , auth = require('./config/middlewares/authorization')
-    , mongoose = require('mongoose')
+    , auth      = require('./config/middlewares/authorization')
+    , mongoose  = require('mongoose')
 
-// Bootstrap db connection
-//var db = mongoose.connect(config.db)
 
-// Bootstrap models
+var db          = mongoose.connect(config.db)
+
+
 var models_path = __dirname + '/app/models'
+
 fs.readdirSync(models_path).forEach(function (file) {
     require(models_path+'/'+file)
 })
 
 // bootstrap passport config
-//require('./config/passport')(passport, config)
+require('./config/passport')(passport, config)
 
 var app = express()
 
@@ -45,7 +37,7 @@ require('./config/express')(app, config, passport)
 
 // Bootstrap routes
 
-var auth= {}
+
 
 
 require('./config/routes')(app, passport, auth)

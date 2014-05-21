@@ -52,20 +52,21 @@ module.exports = function (app, config, passport) {
     app.use(methodOverride())
 
     // express/mongo session storage
-    /*    app.use(express.session({
+
+    app.use(session({
      secret: 'ngFantasyFootball',
      store: new mongoStore({
      url: config.db,
      collection : 'sessions'
      })
      }))
-     */
+
     // connect flash for flash messages
     app.use(flash())
 
     // use passport session
-    /*   app.use(passport.initialize())
-     app.use(passport.session())*/
+    /  app.use(passport.initialize())
+     app.use(passport.session())
 
     // routes should be at the last
     // app.use(app.router); no funciona en express 4 las rutas se ejecutan en el orden en el que se han insertado
