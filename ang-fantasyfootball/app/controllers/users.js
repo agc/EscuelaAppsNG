@@ -1,23 +1,12 @@
-/**
- * Module dependencies.
- */
-
 var mongoose    = require('mongoose')
     , User      = mongoose.model('User')
 
-//exports.signin = function (req, res) {}
-
-/**
- * Auth callback
- */
 
 exports.authCallback = function (req, res, next) {
     res.redirect('/')
 }
 
-/**
- * Show login form
- */
+
 
 exports.signin = function (req, res) {
 
@@ -28,9 +17,7 @@ exports.signin = function (req, res) {
     })
 }
 
-/**
- * Show sign up form
- */
+
 
 exports.signup = function (req, res) {
     res.render('users/signup', {
@@ -39,26 +26,19 @@ exports.signup = function (req, res) {
     })
 }
 
-/**
- * Logout
- */
 
 exports.signout = function (req, res) {
     req.logout()
     res.redirect('/')
 }
 
-/**
- * Session
- */
+
 
 exports.session = function (req, res) {
     res.redirect('/')
 }
 
-/**
- * Create user
- */
+
 
 exports.create = function (req, res) {
     var user = new User(req.body)
@@ -74,9 +54,7 @@ exports.create = function (req, res) {
     })
 }
 
-/**
- *  Show profile
- */
+
 
 exports.show = function (req, res) {
     var user = req.profile
@@ -90,9 +68,7 @@ exports.me = function (req, res) {
     res.jsonp(req.user || null);
 }
 
-/**
- * Find user by id
- */
+
 
 exports.user = function (req, res, next, id) {
     User

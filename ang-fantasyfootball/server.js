@@ -39,6 +39,9 @@ require('./config/routes')(app, passport, auth)
 
 require('./config/postroutes')(app, passport, auth)
 
+process.on('uncaughtException', function (error) {
+    console.log(error.stack);
+});
 
 // Start the app by listening on <port>
 var port = process.env.PORT || 3000

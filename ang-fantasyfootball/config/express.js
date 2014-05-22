@@ -65,7 +65,8 @@ module.exports = function (app, config, passport) {
     app.use(flash())
 
     // use passport session
-    /  app.use(passport.initialize())
+
+     app.use(passport.initialize())
      app.use(passport.session())
 
     // routes should be at the last
