@@ -6,12 +6,22 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 
 
-var modelos= require('./models/wine')
+// he usado sequelize_rest pero prefiero el modulo propio
+
+//var modelos= require('./models/wine') //definicion del modelo
+
+
+
+
 
 var routes      = require('./routes/index');
-var wines       = require('./routes/wines');
+var wines       = require('./routes/wines'); // rutas wine
 
 var app = express();
+
+process.on('uncaughtException', function (error) {
+    console.log(error.stack);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,7 +35,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/',        routes);
-app.use('/wines',   wines);
+app.use('/wines',   wines);     //prefijo asociado a las rutas
+
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
