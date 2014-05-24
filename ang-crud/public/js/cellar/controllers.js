@@ -15,10 +15,14 @@ angular.module('Vinos.Controllers',['Vinos.Services','ngRoute'])
 
 
         $scope.saveWine = function () {
+
             if ($scope.wine.id > 0)
-                $scope.wine.$update({wineId:$scope.wine.id});
+               // $scope.wine.$update({wineId:$scope.wine.id});
+                Wine.update({wineId:$scope.wine.id}, $scope.wine)
+
             else
-                $scope.wine.$save();
+                Wine.create($scope.wine)
+               // $scope.wine.$save();
             window.location = "#/wines";
         }
 

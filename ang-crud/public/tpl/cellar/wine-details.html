@@ -3,19 +3,19 @@
     <input name="id" type="text" value="{{ wine.id }}" disabled />
 
     <label>Name:</label>
-    <input type="text" name="wine.name" value="{{ wine.name }}" required/>
+    <input type="text" name="wine.name" ng-model="wine.name" required/>
 
     <label>Grapes:</label>
-    <input type="text" name="wine.grapes" value="{{ wine.grapes }}"/>
+    <input type="text" name="wine.grapes" ng-model=" wine.grapes "/>
 
     <label>Country:</label>
-    <input type="text" name="wine.country" value="{{ wine.country }}"/>
+    <input type="text" name="wine.country" ng-model="wine.country"/>
 
     <label>Region:</label>
-    <input type="text" name="wine.region" value="{{ wine.region }}"/>
+    <input type="text" name="wine.region" ng-model="wine.region"/>
 
     <label>Year:</label>
-    <input type="text" name="wine.year" value="{{ wine.year }}"/>
+    <input type="text" name="wine.year" ng-model="wine.year"/>
 
     <button class="save" ng:click="saveWine()">Save</button>
     <button class="delete" ng:click="deleteWine()">Delete</button>
