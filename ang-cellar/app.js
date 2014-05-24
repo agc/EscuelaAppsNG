@@ -14,8 +14,8 @@ var bodyParser   = require('body-parser');
 
 
 
-var routes      = require('./routes/index');
-var wines       = require('./routes/wines'); // rutas wine
+var routes      = require('./app/routes/index');
+var wines       = require('./app/routes/wines');
 
 var app = express();
 
@@ -24,7 +24,7 @@ process.on('uncaughtException', function (error) {
 });
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '/app/views'));
 app.set('view engine', 'ejs');
 
 app.use(favicon());
@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/',        routes);
-app.use('/wines',   wines);     //prefijo asociado a las rutas
+app.use('/api/wines',   wines);     //prefijo asociado a las rutas
 
 
 /// catch 404 and forwarding to error handler

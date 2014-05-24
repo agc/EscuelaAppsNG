@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html ng-app='Vinos'>
+<head>
+    <title>Angular Cellar</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body ng-controller="RouteCtrl">
+
+<div id="header">
+    Angular Cellar
+    <button ng-click="addWine()">New Wine</button>
+</div>
+
+<div id="sidebar">
+    <ng-include src="'tpl/wine-list.html'"></ng-include>
+</div>
+
+<div id="content">
+    <ng-view></ng-view>
+</div>
+
+<script src="lib/angular/angular.min.js"></script>
+<script src="lib/angular-resource/angular-resource.min.js" ></script>
+<script src="lib/angular-route/angular-route.min.js" ></script>
+<script src="js/services.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/app.js" ></script>
+<script src="js/config.js"></script>
+
+</body>
+
+</html>
