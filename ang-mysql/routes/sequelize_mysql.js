@@ -4,7 +4,7 @@ var router      = express.Router();
 
 var Sequelize   = require('sequelize')
 
-    , sequelize = new Sequelize('todo_demo', 'usuariointraweb', '19601706', {
+    , sequelize = new Sequelize('mantenimientomayo', 'usuariointraweb', '19601706', {
         dialect: "mysql", // or 'sqlite', 'postgres', 'mariadb'
         port:    3306    // or 5432 (for postgres)
     })
@@ -25,12 +25,21 @@ var User    = sequelize.define('User', {
 })
 
 var Todo    = sequelize.define('todo', {
-   title: Sequelize.STRING,
+   title: Sequelize.STRING
 
 })
 
+var Averia= sequelize.define('Averia', {
+    asunto: Sequelize.STRING},
+    {
+        tableName:'averia',
+        timestamps: false
+    }
+
+)
+
 sequelize
-    .sync({ force: true })
+    .sync({ force: false })
     .complete(function(err) {
         if (!!err) {
             console.log('An error occurred while creating the table:', err)
