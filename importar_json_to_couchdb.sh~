@@ -1,0 +1,3 @@
+
+DB="http://localhost:5984/music"
+curl -H "Content-Type:application/json" -T music.json -vX POST $DB/_bulk_docs
