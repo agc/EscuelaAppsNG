@@ -2,7 +2,7 @@
 
 var services = angular.module('ngdemoApp.services', ['ngResource']);
 
-var baseUrl = 'http://localhost\\:8080';
+var baseUrl = 'http://localhost\\:3000';
 
 services.factory('DummyFactory', function ($resource) {
     return $resource(baseUrl + '/ngdemo/web/dummy', {}, {
@@ -11,14 +11,14 @@ services.factory('DummyFactory', function ($resource) {
 });
 
 services.factory('UsersFactory', function ($resource) {
-    return $resource(baseUrl + '/ngdemo/web/users', {}, {
+    return $resource(baseUrl + '/api/users', {}, {
         query: { method: 'GET', isArray: true },
         create: { method: 'POST' }
     })
 });
 
 services.factory('UserFactory', function ($resource) {
-    return $resource(baseUrl + '/ngdemo/web/users/:id', {}, {
+    return $resource(baseUrl + '/api/users/:id', {}, {
         show: { method: 'GET' },
         update: { method: 'PUT', params: {id: '@id'} },
         delete: { method: 'DELETE', params: {id: '@id'} }

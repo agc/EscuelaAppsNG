@@ -16,6 +16,7 @@ var bodyParser   = require('body-parser');
 
 var routes      = require('./app/routes/index');
 var wines       = require('./app/routes/wines');
+var users       = require('./app/routes/users');
 
 var app = express();
 
@@ -36,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/',        routes);
 app.use('/api/wines',   wines);     //prefijo asociado a las rutas
+app.use('/api/users',   users);     //prefijo asociado a las rutas
 
 
 /// catch 404 and forwarding to error handler
