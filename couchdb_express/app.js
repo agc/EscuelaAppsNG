@@ -1,19 +1,21 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('static-favicon');
-var logger = require('morgan');
+var express     = require('express');
+var path        = require('path');
+var favicon     = require('static-favicon');
+var logger      = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var bodyParser  = require('body-parser');
+var app         = express();
+var routes      = require('./app/routes/index');
+var users       = require('./app/routes/users');
 
-var routes = require('./app/routes/index');
-var users = require('./app/routes/users');
-var articles_memory=require('./app/routes/articles_memory')
 
-var app = express();
+
+var articles_memory=require('./app/routes/articles_couchdb_cradle')(app)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'jade');
+
 
 app.use(favicon());
 app.use(logger('dev'));
@@ -24,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/articles_memory',articles_memory)
+app.use('/blog',articles_memory)
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

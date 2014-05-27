@@ -5,9 +5,45 @@ var router = express.Router();
 var articleProvider= new ArticleProvider();
 /* GET home page. */
 
-router.get('/', function(req, res){
-    articleProvider.findAll(function(error, docs){
-        res.send(docs);
-    })});
 
-module.exports = router;
+
+module.exports = function(app) {
+
+    router.get('/', function(req, res){
+
+        /* articleProvider.findAll(function(error, docs){
+         res.send(docs);
+         })});
+         */
+
+        articleProvider.findAll(function(error, docs){
+            res.render('blogs_index.jade', {
+
+                    title: 'Blog',
+                    articles: docs
+
+            });
+        })})
+
+
+    router.get('/new', function(req,res){
+        res.render('blog_new', {
+
+                title: 'New Post'
+
+        });
+    });
+
+    router.post('/new', function(req,res){
+        articleProvider.save({
+            title: req.param('title'),
+            body: req.param('body')
+        }, function(error, docs) {
+            res.redirect('/blog')
+        });
+    });
+
+
+
+    return router;
+}
