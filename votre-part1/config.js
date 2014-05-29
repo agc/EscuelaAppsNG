@@ -3,8 +3,8 @@ var config = {};
 config.couchdb = {};
 config.twilio = {};
 
-config.couchdb.url = 'https://agalveca.cloudant.com';
-config.couchdb.port = 443;
+config.couchdb.url = 'http://localhost';
+config.couchdb.port = 5984;
 config.couchdb.username = 'agalveca';
 config.couchdb.password = '19601706';
 

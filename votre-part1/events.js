@@ -1,10 +1,16 @@
 var config = require('./config')
     , utils = require('./utils')
     , cradle = require('cradle')
-    , connection = new(cradle.Connection)(config.couchdb.url, config.couchdb.port, {
-    auth:{username: config.couchdb.username, password: config.couchdb.password},
-    cache: true})
+    , connection = new(cradle.Connection)(config.couchdb.url, config.couchdb.port)
     , events = connection.database('events')
+
+
+    /*
+
+     connection = new(cradle.Connection)(config.couchdb.url, config.couchdb.port, {
+     auth:{username: config.couchdb.username, password: config.couchdb.password},
+     cache: true})
+     */
 
     // query events based on either shortname or phonenumber (both unique keys)
 

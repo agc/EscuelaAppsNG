@@ -1,14 +1,12 @@
-var utils = require('../utils')
-    , config = require('../config')
-    , twilio = require('twilio')
-    , events = require('../events');
+var utils       = require('../utils')
+    , config    = require('../config')
+    , twilio    = require('twilio')
+    , events    = require('../events');
 
-/*
- * GET home page.
- */
+
 
 exports.index = function(req, res){
-    res.render('index', { title: 'Express' });
+    res.render('index', { title: 'Express, Angular JS y Couchdb' });
 };
 
 /*
