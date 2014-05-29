@@ -5,7 +5,9 @@ var logger          = require('morgan');
 var cookieParser    = require('cookie-parser');
 var bodyParser      = require('body-parser');
 
-var routes          = require('./routes/index_local');
+
+
+
 var users           = require('./routes/users');
 
 var app             = express();
@@ -22,39 +24,40 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.get('/', routes.index);
-app.post('/vote/sms', routes.voteSMS);
 
-/// catch 404 and forwarding to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+
+
+app.set('port', process.env.PORT || 3000);
+
+var debug = require('debug')('my-application');
+
+var server = app.listen(app.get('port'), function() {
+    debug('Express server listening on port ' + server.address().port);
 });
 
-/// error handlers
+var socketio = require('socket.io');
 
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
+var io=socketio.listen(server);
 
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
+
+
+
+/*
+ io.configure('development', function(){
+
+ io.set('log level', 1);
+ });
+
+ */
+
+io.sockets.on('connection', function(socket) {
+    socket.on('event', function(event) {
+        socket.join(event);
     });
 });
 
 
-module.exports = app;
+var routes          = require('./routes/index_local')(app,io);
+
+
+

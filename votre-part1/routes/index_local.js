@@ -1,19 +1,78 @@
 var utils       = require('../utils')
     , config    = require('../config')
     , twilio    = require('twilio')
-    , events    = require('../events');
+    , events    = require('../events')
+    ,io;
 
 
+module.exports = function(app, socketio) {
+    io = socketio;
+    app.get('/', index);
+    app.get('/events/:shortname', event);
+    app.post('/vote/sms', voteSMS);
 
-exports.index = function(req, res){
+    /// catch 404 and forwarding to error handler
+    app.use(function(req, res, next) {
+        var err = new Error('Not Found');
+        err.status = 404;
+        next(err);
+    });
+
+/// error handlers
+
+// development error handler
+// will print stacktrace
+    if (app.get('env') === 'development') {
+        app.use(function(err, req, res, next) {
+            res.status(err.status || 500);
+            res.render('error', {
+                message: err.message,
+                error: err
+            });
+        });
+    }
+
+// production error handler
+// no stacktraces leaked to user
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: {}
+        });
+    });
+};
+
+var index = function(req, res){
     res.render('index', { title: 'Express, Angular JS y Couchdb' });
 };
 
-/*
- * POST new vote via SMS
- */
 
-exports.voteSMS = function(request, response) {
+var event = function(req, res){
+
+    events.findBy('shortname', req.params.shortname, function(err, event) {
+        if (event) {
+            // remove sensitive data
+            event.voteoptions.forEach(function(vo){
+                delete vo.numbers;
+            });
+
+            res.render('event', {
+                name: event.name, shortname: event.shortname, state: event.state,
+                phonenumber: utils.formatPhone(event.phonenumber), voteoptions: JSON.stringify(event.voteoptions)
+            });
+        }
+        else {
+            res.statusCode = 404;
+            res.send('We could not locate your event');
+        }
+    });
+};
+
+
+var voteSMS = function(request, response) {
+
+
 
     var body = request.param('Body').trim();
 
@@ -22,6 +81,8 @@ exports.voteSMS = function(request, response) {
 
     // the voter, use this to keep people from voting more than once
     var from = request.param('From');
+
+
 
     events.findBy('phonenumber', to, function(err, event) {
         if (err) {
@@ -62,3 +123,5 @@ exports.voteSMS = function(request, response) {
 
 
 };
+
+
