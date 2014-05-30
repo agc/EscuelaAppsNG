@@ -7,7 +7,7 @@ function importdata()
     var connection = new (cradle.Connection)("localhost",5984);
     var db = connection.database('geoexample');
 
-    data = fs.readFileSync("data.json","utf-8");
+    data = fs.readFileSync("./datos/data.json","utf-8");
 
     flickr = JSON.parse(data);
 
