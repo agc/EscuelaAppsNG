@@ -1,0 +1,42 @@
+Nano
+
+ https://github.com/dscape/nano
+
+
+Argumentos 
+
+-X comando -d datos -H header cabecera
+
+ curl -X PUT http://127.0.0.1:5984/contacts
+
+ curl -X GET http://127.0.0.1:5984/_all_dbs
+
+ curl -X DELETE http://127.0.0.1:5984/books
+
+ curl -X PUT http://127.0.0.1:5984/contacts/johndoe -d '{}'
+
+ curl -X GET http://127.0.0.1:5984/contacts/johndoe
+
+ curl -X DELETE http://127.0.0.1:5984/contacts/johndoe?rev=1-795358690
+
+ curl -X PUT http://127.0.0.1:5984/contacts/joelennon -d '{"firstName":"Joe","lastName":"Lennon","email":"joe@joelennon.ie"}'
+
+ curl -X COPY http://127.0.0.1:5984/contacts/joelennon -H "Destination: johnsmith"
+
+ curl -X PUT http://127.0.0.1:5984/contacts/johnsmith -d '{"_rev":"1-a2983618d8d9971921d313e8907a2a3c","firstName":"John","lastName":"Smith","email":["johnsmith@example com","jsmith@example.com"],"phone":"(555) 555-5555"}'
+
+ curl -X GET http://127.0.0.1:5984/contacts/_all_docs
+
+ curl -X GET http://127.0.0.1:5984/contacts/_all_docs?descending=true
+
+ curl -X GET http://127.0.0.1:5984/contacts/_all_docs?descending=true\&limit=1
+
+ Además de los metadatos se pueden recuperar los documentos
+
+ curl -X GET http://127.0.0.1:5984/contacts/_all_docs?include_docs=true
+
+ curl -X GET http://127.0.0.1:5984/contacts/_all_docs_by_seq
+
+ todos los documentos, incluidos los borrados, ordenados según la última vez que fueron modificados
+
+ 
