@@ -1,12 +1,13 @@
 var utils       = require('../utils')
     , config    = require('../config')
-    , twilio    = require('twilio')
-    , events    = require('../events')
+    , events
     ,io;
+
 
 
 module.exports = function(app, socketio) {
     io = socketio;
+    events = require('../events')(io);
     app.get('/', index);
     app.get('/events/:shortname', event);
     app.post('/vote/sms', voteSMS);
@@ -41,6 +42,8 @@ module.exports = function(app, socketio) {
             error: {}
         });
     });
+
+    return exports;
 };
 
 var index = function(req, res){
@@ -50,16 +53,25 @@ var index = function(req, res){
 
 var event = function(req, res){
 
-    events.findBy('shortname', req.params.shortname, function(err, event) {
-        if (event) {
-            // remove sensitive data
-            event.voteoptions.forEach(function(vo){
-                delete vo.numbers;
-            });
 
-            res.render('event', {
-                name: event.name, shortname: event.shortname, state: event.state,
-                phonenumber: utils.formatPhone(event.phonenumber), voteoptions: JSON.stringify(event.voteoptions)
+
+    events.findBy('all', {key: ['event:'+req.params.shortname], reduce:false}, function(err, event) {
+        if (event) {
+
+            events.voteCounts(event, function (err) {
+
+                if (err) {
+
+
+                }
+                else {
+
+
+                    res.render('event', {
+                        name: event.name, shortname: event.shortname, state: event.state,
+                        phonenumber: utils.formatPhone(event.phonenumber), voteoptions: JSON.stringify(event.voteoptions)
+                    });
+                }
             });
         }
         else {
@@ -72,8 +84,6 @@ var event = function(req, res){
 
 var voteSMS = function(request, response) {
 
-
-
     var body = request.param('Body').trim();
 
     // the number the vote it being sent to (this should match an Event)
@@ -82,10 +92,10 @@ var voteSMS = function(request, response) {
     // the voter, use this to keep people from voting more than once
     var from = request.param('From');
 
+    events.findByPhonenumber(to, function(err, event) {
 
-
-    events.findBy('phonenumber', to, function(err, event) {
         if (err) {
+
             console.log(err);
             // silently fail for the user
             response.send('<Response></Response>');
@@ -101,23 +111,14 @@ var voteSMS = function(request, response) {
             console.log('Bad vote: ' + event.name + ', ' + from + ', ' + body + ', ' + ('[1-'+event.voteoptions.length+']'));
             response.send('<Response><Sms>Sorry, invalid vote. Please text a number between 1 and '+ event.voteoptions.length +'</Sms></Response>');
         }
-        else if (events.hasVoted(event, from)) {
-            console.log('Denying vote: ' + event.name + ', ' + from);
-            response.send('<Response><Sms>Sorry, you are only allowed to vote once.</Sms></Response>');
-        }
         else {
-
             var vote = parseInt(body);
 
-            events.saveVote(event, vote, from, function(err, res) {
-                if (err) {
-                    response.send('<Response><Sms>We encountered an error saving your vote. Try again?</Sms></Response>');
-                }
-                else {
-                    console.log('Accepting vote: ' + event.name + ', ' + from);
-                    response.send('<Response><Sms>Thanks for your vote for ' + res.name + '. Powered by Twilio.</Sms></Response>');
-                }
-            });
+            events.saveVote(event, vote, from);
+            console.log('Accepting vote: ' + event.name + ', ' + from);
+            //io.sockets.in(event.shortname).emit('vote', vote);
+            //response.send('<Response><Sms>Thanks for your vote for ' + event.voteoptions[vote-1].name + '. Powered by Twilio.</Sms></Response>');
+            response.send('<Response></Response>');
         }
     });
 
