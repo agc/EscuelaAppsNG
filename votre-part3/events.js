@@ -1,8 +1,11 @@
-var config = require('./config')
+    var config = require('./config')
     , utils = require('./utils')
-    , cradle = require('cradle')
-    , connection = new(cradle.Connection)(config.couchdb.url, config.couchdb.port)
-    , events = connection.database('events')
+    , _und = require('underscore')
+    , db = require('nano')(config.couchdb.url)
+
+
+
+
 
 
     /*
