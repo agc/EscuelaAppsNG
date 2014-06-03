@@ -1,49 +1,13 @@
 // query events based on either shortname or phonenumber (both unique keys)
 
-var config = require('./config')
-    , utils = require('./utils')
-    , _und = require('underscore')
-    , db = require('nano')(config.couchdb.url)
-    , eventsCache = {}
+var config                       = require('./config')
+    , utils                     = require('./utils')
+    , _und                      = require('underscore')
+    , db                        = require('nano')(config.couchdb.url)
+    , eventsCache               = {}
     , secondsToInvalidateEvents = config.couchdb.secondsToInvalidateEvents
-    , votesCache = {}
-    , secondsToFlushVotes = config.couchdb.secondsToFlushVotes
-
-
-    , voteCounts = exports.voteCounts = function(event, callback) {
-
-
-        db.view('view', 'all', {startkey: [event._id], endkey: [event._id, {}, {}], group_level: 2}, function(err, body) {
-            if (err) {
-                callback(err);
-            }
-            else {
-                console.log("LLega aqui")
-                // populate count for voteoptions
-                event.voteoptions.forEach(function(vo, i){
-                    var found = _und.find(body.rows, function(x) {return x.key[1] == vo.id});
-                    vo['votes'] = (found? found.value : 0);
-                });
-                callback();
-            }
-        });
-    }
-
-    ,	saveVote = exports.saveVote = function(event, vote, from) {
-
-        // The _id of our vote document will be a composite of our event_id and the
-        // person's phone number. This will guarantee one vote per event
-        var voteDoc = {
-            _id: 'vote:' + event._id + ':' + from,
-            type: 'vote',
-            event_id: event._id,
-            event_phonenumber: event.phonenumber,
-            vote: vote,
-            phonenumber: from
-        };
-
-        votesCache[voteDoc._id] = voteDoc;
-    }
+    , votesCache                = {}
+    , secondsToFlushVotes       = config.couchdb.secondsToFlushVotes
 
     , flushVotes = function() {
 
@@ -84,7 +48,7 @@ var config = require('./config')
     , flushVotesJob = setInterval(flushVotes, 1000*secondsToFlushVotes)
     , io;
 
-exports.findBy=findBy;
+
 
 function findBy(view, params, callback) {
     var event;
@@ -141,9 +105,48 @@ function findByPhonenumber(phonenumber, callback) {
     });
 }
 
-exports.findByPhonenumber=findByPhonenumber;
+function voteCounts(event, callback) {
+
+
+    db.view('view', 'all', {startkey: [event._id], endkey: [event._id, {}, {}], group_level: 2}, function(err, body) {
+        if (err) {
+            callback(err);
+        }
+        else {
+            console.log("LLega aqui")
+            // populate count for voteoptions
+            event.voteoptions.forEach(function(vo, i){
+                var found = _und.find(body.rows, function(x) {return x.key[1] == vo.id});
+                vo['votes'] = (found? found.value : 0);
+            });
+            callback();
+        }
+    });
+}
+
+function saveVote(event, vote, from) {
+
+    // The _id of our vote document will be a composite of our event_id and the
+    // person's phone number. This will guarantee one vote per event
+    var voteDoc = {
+        _id: 'vote:' + event._id + ':' + from,
+        type: 'vote',
+        event_id: event._id,
+        event_phonenumber: event.phonenumber,
+        vote: vote,
+        phonenumber: from
+    };
+
+    votesCache[voteDoc._id] = voteDoc;
+}
+
 
 module.exports = function(socketio) {
     io = socketio;
     return exports;
 };
+
+exports.findBy=findBy;
+exports.findByPhonenumber=findByPhonenumber;
+exports.voteCounts=voteCounts;
+exports.saveVote=saveVote;

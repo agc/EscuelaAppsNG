@@ -3,14 +3,26 @@ var utils       = require('../utils')
     , events
     ,io;
 
-
-
 module.exports = function(app, socketio) {
+
     io = socketio;
     events = require('../events')(io);
+    routes=  require('../routes')
+
     app.get('/', index);
     app.get('/events/:shortname', event);
     app.post('/vote/sms', voteSMS);
+
+    app.get('/admin', function(req, res) {
+
+        console.log("llega")
+
+            routes.admin(req, res);
+
+    });
+
+   app.post ('/api/sessions', routes.login);
+   // app.delete('/api/sessions', routes.logout);
 
     /// catch 404 and forwarding to error handler
     app.use(function(req, res, next) {
@@ -53,20 +65,12 @@ var index = function(req, res){
 
 var event = function(req, res){
 
-
-
     events.findBy('all', {key: ['event:'+req.params.shortname], reduce:false}, function(err, event) {
         if (event) {
-
             events.voteCounts(event, function (err) {
-
                 if (err) {
-
-
                 }
                 else {
-
-
                     res.render('event', {
                         name: event.name, shortname: event.shortname, state: event.state,
                         phonenumber: utils.formatPhone(event.phonenumber), voteoptions: JSON.stringify(event.voteoptions)
