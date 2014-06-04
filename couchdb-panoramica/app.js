@@ -8,13 +8,13 @@ var bodyParser      = require('body-parser');
 
 
 
-var engine          =require('ejs-locals');
+
 
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
 
-app.engine('ejs',engine);
+
 app.set('view engine', 'ejs');
 
 

@@ -1,0 +1,53 @@
+<a href='/posts'>Home</a>
+<% if(this.post) { %>
+<h1><%= post.title %></h1>
+
+<div class='post-content'>
+    <%= post.body %>
+</div>
+<%}%>
+
+<div>
+    <h2>Comentarios</h2>
+    <ul id='comments'>
+        <%
+        if (this.post)
+        post.comments.forEach(function(comentario) { %>
+        <li>
+            <div>
+                Author: <span class='author'><%= comentario.author%></span>
+            </div>
+            <div>
+                <%= comentario.body%>
+            </div>
+        </li>
+
+       <% })%>
+        <% if (this.post && !this.comments){ %>
+
+        No hay comentarios todavía
+        <%}%>
+
+
+    </ul>
+</div>
+
+<form method='post' action='/posts/{{_id}}/comments'>
+    <fieldset>
+        <legend>Escribe tu comentario</legend>
+
+        <div>
+            <label for='author'>Nombre</label>
+            <input name='author' />
+        </div>
+
+        <div>
+            <label for='body'>Tu comentario</label>
+            <input name='body' />
+        </div>
+
+        <div class='buttons'>
+            <input type='submit' value='Post Comment' />
+        </div>
+    </fieldset>
+</form>

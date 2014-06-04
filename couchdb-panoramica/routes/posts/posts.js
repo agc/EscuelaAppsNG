@@ -17,19 +17,41 @@ router.get('/new', function(req, res) {
     res.render('./posts/new', { title: 'Posts con COUCHDB' });
 });
 
+router.get('/list',function(req,res) {
+
+    db.view('blog', 'posts_by_date').then(
+
+        function(resp) {
+
+            var posts = resp.rows.map(function (x) {
+                return x.value;
+            });
+
+            res.render('./posts/list', {posts: posts})
+        },
+        function(error) {
+
+            res.render('error',{message:error.message,error:error})
+        }
+
+    )}
+);
+
+
+router.get('/show',function(req,res) {
+    res.render('./posts/show',{post:{}});
+});
 
 router.post('/',function(req,res) {
 
     var post ={
-
       title:req.body.title,
       body:req.body.body
     }
+
     post.type = 'post';
 
     return db.saveDoc(post).then(function(resp) {
-
-
         return res.redirect('/posts');
     },
     function (error) {

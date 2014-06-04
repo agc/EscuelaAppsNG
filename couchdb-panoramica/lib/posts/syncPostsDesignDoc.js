@@ -1,7 +1,7 @@
 //ejecutar node syncPostsDesignDoc
 
 var couchdb = require('couchdb')
-    , settings = require('../config/posts_config');
+    , settings = require('../../config/posts_config');
 
 var client  = couchdb.createClient(settings.port, settings.host, { user: settings.user, password: settings.password });
 var db      = client.db(settings.db);
