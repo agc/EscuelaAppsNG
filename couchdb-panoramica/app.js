@@ -5,16 +5,13 @@ var logger          = require('morgan');
 var cookieParser    = require('cookie-parser');
 var bodyParser      = require('body-parser');
 
-var engine      =require('ejs-locals');
 
 
 
+var engine          =require('ejs-locals');
 
 var app = express();
 
-
-
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
 app.engine('ejs',engine);
@@ -22,13 +19,6 @@ app.set('view engine', 'ejs');
 
 
 
-app.get('/simple', function(req, res){
-    var data = {name: 'Gorilla'};
-    res.render('simple', data);
-});
-
-var routes          = require('./routes/index');
-var users           = require('./routes/users');
 
 app.use(favicon());
 app.use(logger('dev'));
@@ -37,8 +27,12 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+
+app.use('/', require('./routes/index'))
+
+app.use('/posts',require('./routes/posts/posts'))
+
+
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
