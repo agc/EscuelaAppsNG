@@ -38,9 +38,16 @@ router.get('/list',function(req,res) {
 );
 
 
-router.get('/show',function(req,res) {
-    res.render('./posts/show',{post:{}});
-});
+router.get('/:id',function(req,res) {
+
+        db.openDoc(req.params.id).then(function(post) {
+            console.log("llega")
+            console.log(post)
+            res.render('./posts/show',{post:post})
+        })
+    })
+
+
 
 router.post('/',function(req,res) {
 
