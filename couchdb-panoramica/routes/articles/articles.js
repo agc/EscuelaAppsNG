@@ -4,13 +4,19 @@ var router              = express.Router();
 
 
 module.exports=function(tipo) {
+    var ArticleProvider,articleProvider
 
  if (tipo==="memoria") {
 
-     var ArticleProvider     = require('../../lib/article_provider_mem').ArticleProvider;
-     var articleProvider     = new ArticleProvider();
+      ArticleProvider     = require('../../lib/article_provider_mem').ArticleProvider;
+      articleProvider     = new ArticleProvider();
 
  }
+    if (tipo==='couchdb') {
+
+         ArticleProvider = require('../../lib/articles_provider_cradle').ArticleProvider;
+         articleProvider= new ArticleProvider("http://localhost",5984);
+    }
 
     router.get('/info', function(req, res) {
         res.render('./articles/info.jade', { title: 'Articles con COUCHDB' });
@@ -25,10 +31,21 @@ module.exports=function(tipo) {
         res.render('./articles/blog_new.jade', {title: 'New Post'});
     });
 
-    router.post('/new', function(req,res){
+    router.post('/new', function(req,res) {
+        console.log(tipo)
+        var ira
+        if (tipo === "memoria") {
+
+            ira = "/articles"
+        }
+
+        else
+        {
+            ira = "/articulos"
+        }
         articleProvider.save({title: req.param('title'),body: req.param('body')
         }, function(error, docs) {
-            res.redirect('/articles')
+            res.redirect(ira)
         });
     });
     return router;

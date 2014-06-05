@@ -3,7 +3,8 @@ var cradle = require('cradle');
 ArticleProvider = function(host, port) {
     this.connection= new (cradle.Connection)(host, port, {
         cache: true,
-        raw: false
+        raw: false,
+        auth: { username: 'agalveca', password: '19601706' }
     });
     this.db = this.connection.database('articles');
 };
