@@ -5,7 +5,7 @@ var logger          = require('morgan');
 var cookieParser    = require('cookie-parser');
 var bodyParser      = require('body-parser');
 var consolidar      = require('consolidate')
-var app = express();
+var app             = express();
 
 app.set('views', path.join(__dirname, 'views'));
 
@@ -13,9 +13,6 @@ app.engine('ejs', consolidar.ejs)
 app.engine('jade',consolidar.jade)
 
 app.set('view engine', 'ejs');
-
-
-
 
 app.use(favicon());
 app.use(logger('dev'));
@@ -27,16 +24,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 require('./routes/')(app)
 
-
-
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
-
-/// error handlers
 
 // development error handler
 // will print stacktrace

@@ -1,6 +1,6 @@
 Posts
 
-Archivos             views/posts routes/posts lib
+Archivos             views/posts routes/posts scripts
 Angularjs            No
 Authentication       No
 CouchDB              Si
@@ -14,6 +14,22 @@ Ejecutar            nodemon ./scripts/www
 
 En este modulo, para que funcione la creación de un documento de diseño, he creado una carpeta lib y copiado en ella
 el archivo promise.js
+
+Articles
+
+Como se usa consolidator estas rutas usan jade
+
+Archivos             views/articles routes/articles lib
+Angularjs            No
+Authentication       No
+CouchDB              Si
+Templates            Jade
+Base de datos        blogs
+Scripts
+
+Modulos              cradle
+
+Ejecutar            nodemon ./scripts/www
 
 
 
