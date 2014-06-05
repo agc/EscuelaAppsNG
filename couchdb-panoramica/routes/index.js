@@ -1,9 +1,7 @@
-var express = require('express');
-var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res) {
-  res.render('index', { title: 'Blog Express' });
-});
+module.exports=function(app) {
 
-module.exports = router;
+    app.use('/', require('./general/index'))
+    app.use('/posts',require('./posts/posts'))
+    app.use('/moreposts',require('./moreposts/moreposts'))
+}
