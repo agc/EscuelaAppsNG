@@ -8,13 +8,13 @@ module.exports=function(tipo) {
 
  if (tipo==="memoria") {
 
-      ArticleProvider     = require('../../lib/article_provider_mem').ArticleProvider;
+      ArticleProvider     = require('./lib/lib_article_provider_mem').ArticleProvider;
       articleProvider     = new ArticleProvider();
 
  }
     if (tipo==='couchdb') {
 
-         ArticleProvider = require('../../lib/articles_provider_cradle').ArticleProvider;
+         ArticleProvider = require('./lib/lib_articles_provider_cradle').ArticleProvider;
          articleProvider= new ArticleProvider("http://localhost",5984);
     }
 

@@ -9,6 +9,8 @@ ArticleProvider = function(host, port) {
     this.db = this.connection.database('articles');
 };
 
+// debe existir un desing document articles/all
+
 ArticleProvider.prototype.findAll = function(callback) {
     this.db.view('articles/all',function(error, result) {
         if( error ){

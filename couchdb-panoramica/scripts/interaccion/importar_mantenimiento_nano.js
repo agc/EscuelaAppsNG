@@ -1,6 +1,6 @@
 var http = require("http");
 var url = require("url");
-var importd = require("./../../../databases/lib/lib_mantenimiento_nano");
+var importd = require("./lib/lib_mantenimiento_nano");
 
 function onRequest(request, response)
 {
@@ -10,10 +10,21 @@ function onRequest(request, response)
 
     switch(pathname) {
 
+
         case '/listado_usuarios':
             importd.lista('usuario');
             console.log("Registros listados")
             break;
+
+        case '/importacion_usuarios':
+            importd.importacion_usuarios();
+            console.log("Datos importados")
+            break;
+
+        case '/borrarusuarios':
+            importd.borrarusuarios();
+            console.log("Usuarios borrados")
+            break
 
         case '/listado_equipos':
             importd.lista('equipo');
@@ -25,10 +36,7 @@ function onRequest(request, response)
             console.log("Datos importados")
             break;
 
-        case '/borrarusuarios':
-            importd.borrarusuarios();
-            console.log("Usuarios borrados")
-            break
+
         default:
             console.log(pathname)
 
