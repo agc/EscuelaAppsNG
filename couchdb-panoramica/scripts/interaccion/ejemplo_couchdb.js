@@ -1,6 +1,6 @@
 var
     http  = require('http')
-    , sys = require('sys')
+  , sys = require('sys')
 
 
 var couchdbPath     = 'http://localhost:5984/'
@@ -12,21 +12,18 @@ var couchdbPath     = 'http://localhost:5984/'
 
 request(
     {uri: couchdbPath + '_all_dbs', headers:h},
-    function(err, response, body) { console.log(sys.inspect(JSON.parse(body))); }
-)
-
-// add database
-/*request(
-    {uri: couchdbPath + 'pruebas', method:'PUT', headers:h},
-    function (err, response, body) {
+    function(err, response, body) {
         if (err)
             throw err;
         if (response.statusCode !== 201 )
-            throw new Error("Could not create database. " + response.statusCode +  body);
-    }
-)*/
+            throw new Error("Ha habido un problema. " + response.statusCode +  body);
 
-// Modify existing document
+        console.log(sys.inspect(JSON.parse(body))); }
+)
+
+
+
+
 var options = {
     host: "localhost",
     port: 5984,
@@ -37,7 +34,7 @@ var options = {
 
 var req = http.request(options, function(res) {
     console.log('STATUS: ' + res.statusCode);
-    //console.log('HEADERS: ' + JSON.stringify(res.headers));
+    console.log('HEADERS: ' + JSON.stringify(res.headers));
     res.setEncoding('utf8');
     res.on('data', function (chunk) {
         console.log('BODY: ' + chunk);

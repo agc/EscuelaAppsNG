@@ -43,12 +43,6 @@ function importarEquipos() {
 }
 
 
-
-
-
-
-
-
 function listarRegistros(tipo) {
 
     var mantenimiento = nano.use(database);

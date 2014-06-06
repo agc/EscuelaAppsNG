@@ -1,6 +1,6 @@
 var http = require("http");
 var url = require("url");
-var importd = require("./lib/importmantenimientocradle");
+var importd = require("./lib/import_mantenimiento_cradle");
 
 function onRequest(request, response)
 {
@@ -29,4 +29,5 @@ function onRequest(request, response)
     response.end();
 }
 http.createServer(onRequest).listen(9999);
-console.log("Server has started.");
+console.log("Server has started. Puerto 9999");
+console.log("Comandos /importarusuarios /borrarusuarios ")
