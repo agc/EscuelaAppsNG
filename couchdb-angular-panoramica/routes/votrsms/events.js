@@ -121,6 +121,30 @@ function voteCounts(event, callback) {
     });
 }
 
+function list(cookie, callback) {
+    db.view('view', 'list', function(err, body) {
+        if (err) {
+            console.log(err);
+            callback(err);
+        }
+        else {
+            var events = _und.map(body.rows, function(row) {return row.value});
+            callback(null, events);
+        }
+    });
+}
+
+ function listaEventos(req, res) {
+    list(req.cookies['AuthSession'], function(err, list) {
+        if (err) {
+            res.send(401, JSON.stringify({error: true}));
+        }
+        else {
+            res.send(list);
+        }
+    });
+}
+
 function event (req, res){
 
     findBy('all', {key: ['event:'+req.params.shortname], reduce:false}, function(err, event) {
@@ -184,3 +208,4 @@ function voteSMS(request, response) {
 
 exports.voteSMS = voteSMS
 exports.event   = event
+exports.list= listaEventos

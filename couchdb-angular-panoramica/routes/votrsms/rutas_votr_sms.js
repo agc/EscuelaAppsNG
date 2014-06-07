@@ -5,6 +5,7 @@ var  events                = require('./events');
 
     router.get('/:shortname',        events.event);
     router.post('/vote/sms',         events.voteSMS);
+    router.get('/api/list',          events.list)
 
 
 
