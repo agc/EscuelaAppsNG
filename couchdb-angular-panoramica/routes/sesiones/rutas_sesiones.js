@@ -7,7 +7,7 @@ router.get('/admin', function(req, res) {
 
 });
 
-router.post ('/api/sessions', sesiones.login);
+router.post ('/api/login', sesiones.login);
 // app.delete('/api/sessions', routes.logout);
 
 

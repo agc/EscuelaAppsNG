@@ -1,4 +1,4 @@
-var config  = require('./../votrsms/config')
+var config  = require('./../events/config')
     , db    = require('nano')({url: config.couchdb.url})
 
     , loggedInUsers = {}

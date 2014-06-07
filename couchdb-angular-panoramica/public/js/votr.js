@@ -37,7 +37,7 @@ app.config(function($httpProvider) {
 });  
 
 app.factory('EventService', function($resource) {
-  return $resource('/events/api/events/:id');
+  return $resource('/events/api/list/:id');
 });
 
 app.factory('SessionService', function($resource) {
@@ -71,6 +71,59 @@ app.controller('LogoutCtrl', function($rootScope, $location, SessionService) {
 
 
 app.controller('EventListCtrl', function($scope, $location, EventService) {
-  // TODO: add code to CRUD events here
+    EventService.query(function(events){
+        $scope.events = events;
+    });
+
+    $scope.editEvent = function(event) {
+        $scope.opts = ['on', 'off'];
+
+        if (event === 'new') {
+            $scope.newEvent = true;
+            $scope.event = {name: '', shortname: '', phonenumber: '', state: '', voteoptions: [{id:1, name: ''}]};
+        }
+        else {
+            $scope.newEvent = false;
+            $scope.event = event;
+        }
+    };
+
+    $scope.save = function() {
+        if (!$scope.event._id) {
+            var newEvent = new EventService($scope.event);
+            newEvent.$save(function(){
+                $scope.events.push(newEvent);
+            });
+        }
+        else {
+            $scope.events.forEach(function(e) {
+                if (e._id === $scope.event._id) {
+                    e.$save();
+                }
+            });
+        }
+    };
+
+    $scope.delete = function() {
+        $scope.events.forEach(function(e, index) {
+            if (e._id == $scope.event._id) {
+                $scope.event.$delete({id: $scope.event._id, rev: $scope.event._rev}, function() {
+                    $scope.events.splice(index, 1);
+                });
+            }
+        });
+    };
+
+    $scope.addVoteOption = function() {
+        $scope.event.voteoptions.push({id: $scope.event.voteoptions.length+1, name: null});
+    };
+
+    $scope.removeVoteOption = function(vo) {
+        $scope.event.voteoptions.splice(vo.id-1, 1);
+        // need to make sure id values run from 1..x (web service constraint)
+        $scope.event.voteoptions.forEach(function(vo, index) {
+            vo.id = index+1;
+        });
+    };
 });
 

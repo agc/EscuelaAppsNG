@@ -134,7 +134,7 @@ function list(cookie, callback) {
     });
 }
 
- function listaEventos(req, res) {
+function listaEventos(req, res) {
     list(req.cookies['AuthSession'], function(err, list) {
         if (err) {
             res.send(401, JSON.stringify({error: true}));
@@ -166,7 +166,6 @@ function event (req, res){
         }
     });
 };
-
 
 function voteSMS(request, response) {
 
@@ -203,9 +202,17 @@ function voteSMS(request, response) {
 
 };
 
+function eventById(req,res) {}
 
+function destroyEvent(req,res) {}
 
+function saveEvent(req,res) {}
 
 exports.voteSMS = voteSMS
 exports.event   = event
 exports.list= listaEventos
+
+exports.eventById=eventById
+exports.destroyEvent=destroyEvent
+exports.saveEvent=saveEvent
+

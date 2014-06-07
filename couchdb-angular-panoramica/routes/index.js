@@ -1,8 +1,8 @@
 module.exports=function(app) {
 
-    app.use('/',        require('./general/index'))
-    app.use('/events',   require('./votrsms/rutas_votr_sms'))
-    app.use('/admin', require('./sesiones/index'))
+    app.use('/',         require('./general/index'))
+    app.use('/events',   require('./events/rutas_events'))
+    app.use('/sesiones', require('./sesiones/rutas_sesiones'))
 
 
 
