@@ -15,7 +15,10 @@
 		<span class="cta {{ state }}"> to Vote!</span></div>
 		<h2 class="{{ state }}">Voting is: {{ state }}</h2>
 		<div id="chart" style="min-width: 400px; height: 500px; margin: 0 auto"></div>
-		<div class="footer"><a href="http://twilio.com/api"><img src="/images/twilio.png"></a><a href="http://nodejitsu.com"><img src="/images/nodejitsu.png"></a><a href="http://cloudant.com"><img src="/images/cloudant.png"></a></div>
+		<div class="footer">
+		Ejemplo de aplicación angular couchdb<br>
+		Votar mediante un POST a http://localhost:3000/events/vote/sms <br>
+		con parametros To +15555551212  From xxxxx Body 1 2 o 3
     </div>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -29,8 +32,7 @@
     	return result;
 	}
 
-	// our websocket
-	var socket = io.connect();
+
 
 	// current state of the voting at load time, updated via websockets
 	var data = "{{ voteoptions }}";
@@ -65,7 +67,7 @@
 		    },
 
 		    subtitle: {
-		        text: 'Powered by Twilio, Nodejitsu & Cloudant'
+		        text: 'Versión simplificada de la original'
 		    },
 
 		    xAxis: {
@@ -119,18 +121,7 @@
 		    series: [{name: 'Votes',data: chartdata}]
 		});
 
-	    socket.on('vote', function(data) {
-			console.log('Incoming vote!', data);
-			vote = parseInt(data);
-			index = vote - 1;
-			votes = chart.series[0].data[index].y;
-			chart.series[0].data[index].update(votes+1);
-		});
 
-		socket.on('connect', function() {
-			console.log("Connected, lets sign-up for updates about votes for this event");
-			socket.emit('event', '{{ shortname }}');
-		});
 
 	});
 

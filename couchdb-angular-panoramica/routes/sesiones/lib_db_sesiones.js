@@ -1,5 +1,5 @@
-var config = require('../config')
-    , db = require('nano')({url: config.couchdb.url})
+var config  = require('./../votrsms/config')
+    , db    = require('nano')({url: config.couchdb.url})
 
     , loggedInUsers = {}
 

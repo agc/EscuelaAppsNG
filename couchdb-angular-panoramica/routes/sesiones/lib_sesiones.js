@@ -1,11 +1,10 @@
 
-var sessions = require('./models/sessions')
+var sessions = require('./lib_db_sesiones')
 
 
 function admin (req, res) {
     var username = sessions.getLoggedInUser(req.cookies['AuthSession']);
-
-    res.render('admin', {username: username});
+    res.render('sesiones/admin', {username: username});
 }
 
 function login(req, res) {

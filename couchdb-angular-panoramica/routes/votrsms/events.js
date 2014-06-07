@@ -1,6 +1,6 @@
 // query events based on either shortname or phonenumber (both unique keys)
 
-var config                       = require('./config')
+var config                      = require('./config')
     , utils                     = require('./utils')
     , _und                      = require('underscore')
     , db                        = require('nano')(config.couchdb.url)
@@ -9,12 +9,35 @@ var config                       = require('./config')
     , votesCache                = {}
     , secondsToFlushVotes       = config.couchdb.secondsToFlushVotes
 
-    , flushVotes = function() {
+// El voto se guarda en la estructura de datos votesCache
+// el _id del voto se compone del event_id y del numero de telefono personal
+// para evitar votos duplicados
+
+function saveVote(event, vote, from) {
+
+    var voteDoc = {
+        _id: 'vote:' + event._id + ':' + from,
+        type: 'vote',
+        event_id: event._id,
+        event_phonenumber: event.phonenumber,
+        vote: vote,
+        phonenumber: from
+    };
+
+    votesCache[voteDoc._id] = voteDoc;
+
+    flushVotes();
+}
+
+// la estructura de datos se vacía, salvo que ocurra un error
+// en ese caso se vuelve a llenar
+function flushVotes() {
 
         var votesToSave = _und.values(votesCache);
         votesCache = {};
 
         if (votesToSave.length > 0) {
+
             db.bulk({docs: votesToSave}, function(err, body) {
                 if (err) {
                     console.log("Failed to save votes, popping them back on the cache");
@@ -30,56 +53,37 @@ var config                       = require('./config')
                             console.log('Notifying of duplicate vote: ', votesToSave[i])
 
                         }
-                        else {
-                            io.sockets.in(votesToSave[i].event_id).emit('vote', votesToSave[i].vote);
-
-                        }
                     }
                 }
             });
         }
     }
 
-    , invalidateEvents = function() {
+function invalidEvents() {
         eventsCache = {};
-    }
-
-    , invalidateEventsJob = setInterval(invalidateEvents, 1000*secondsToInvalidateEvents)
-    , flushVotesJob = setInterval(flushVotes, 1000*secondsToFlushVotes)
-    , io;
-
+}
 
 
 function findBy(view, params, callback) {
     var event;
 
     if (event = eventsCache[view + JSON.stringify(params)]) {
-
-
         callback(null, event);
     }
     else {
-
-
         db.view('view', view, params, function (err, body) { //event creo que le he llamado view
-
-
             if (err) {
-
                 console.log(err);
                 callback(err, null);
             }
             else {
-
                 if (body.rows.length == 0) {
-
                     var msg = 'No match for: ' + view + ', ' + params;
                     console.log(msg);
                     callback(msg, null);
                 }
                 else {
-
-                    event = body.rows[0].value;
+                   event = body.rows[0].value;
                     eventsCache[view + JSON.stringify(params)] = event;
                     console.log(event)
                     callback(null, event);
@@ -91,29 +95,22 @@ function findBy(view, params, callback) {
 
 function findByPhonenumber(phonenumber, callback) {
 
-    findBy('byphonenumber', {key: phonenumber}, function(err, event) { //vista byPhonenumber
-
-
+    findBy('byphonenumber', {key: phonenumber}, function(err, event) {
         if (err) {
             callback(err, null);
         }
         else {
-
-
             findBy('all', {key: [event._id], reduce: false}, callback);
         }
     });
 }
 
 function voteCounts(event, callback) {
-
-
     db.view('view', 'all', {startkey: [event._id], endkey: [event._id, {}, {}], group_level: 2}, function(err, body) {
         if (err) {
             callback(err);
         }
         else {
-            console.log("LLega aqui")
             // populate count for voteoptions
             event.voteoptions.forEach(function(vo, i){
                 var found = _und.find(body.rows, function(x) {return x.key[1] == vo.id});
@@ -124,29 +121,66 @@ function voteCounts(event, callback) {
     });
 }
 
-function saveVote(event, vote, from) {
+function event (req, res){
 
-    // The _id of our vote document will be a composite of our event_id and the
-    // person's phone number. This will guarantee one vote per event
-    var voteDoc = {
-        _id: 'vote:' + event._id + ':' + from,
-        type: 'vote',
-        event_id: event._id,
-        event_phonenumber: event.phonenumber,
-        vote: vote,
-        phonenumber: from
-    };
-
-    votesCache[voteDoc._id] = voteDoc;
-}
-
-
-module.exports = function(socketio) {
-    io = socketio;
-    return exports;
+    findBy('all', {key: ['event:'+req.params.shortname], reduce:false}, function(err, event) {
+        if (event) {
+            voteCounts(event, function (err) {
+                if (err) {
+                }
+                else {
+                    res.render('events/event', {
+                        name: event.name, shortname: event.shortname, state: event.state,
+                        phonenumber: utils.formatPhone(event.phonenumber), voteoptions: JSON.stringify(event.voteoptions)
+                    });
+                }
+            });
+        }
+        else {
+            res.statusCode = 404;
+            res.send('We could not locate your event');
+        }
+    });
 };
 
-exports.findBy=findBy;
-exports.findByPhonenumber=findByPhonenumber;
-exports.voteCounts=voteCounts;
-exports.saveVote=saveVote;
+
+function voteSMS(request, response) {
+
+    var body    = request.param('Body').trim();
+    var to      = request.param('To');
+    var from    = request.param('From');
+
+    findByPhonenumber(to, function(err, event) {
+
+        if (err) {
+            console.log(err);
+            response.send('<Response></Response>');
+        }
+        else if (event.state == "off") {
+            response.send('<Response><Sms>Voting is now closed.</Sms></Response>');
+        }
+        else if (!utils.testint(body)) {
+            console.log('Bad vote: ' + event.name + ', ' + from + ', ' + body);
+            response.send('<Response><Sms>Sorry, invalid vote. Please text a number between 1 and '+ event.voteoptions.length +'</Sms></Response>');
+        }
+        else if (utils.testint(body) && (parseInt(body) <= 0 || parseInt(body) > event.voteoptions.length)) {
+            console.log('Bad vote: ' + event.name + ', ' + from + ', ' + body + ', ' + ('[1-'+event.voteoptions.length+']'));
+            response.send('<Response><Sms>Sorry, invalid vote. Please text a number between 1 and '+ event.voteoptions.length +'</Sms></Response>');
+        }
+        else {
+            var vote = parseInt(body);
+
+            saveVote(event, vote, from);
+            console.log('Accepting vote: ' + event.name + ', ' + from);
+            response.send('<Response></Response>');
+        }
+    });
+
+
+};
+
+
+
+
+exports.voteSMS = voteSMS
+exports.event   = event
