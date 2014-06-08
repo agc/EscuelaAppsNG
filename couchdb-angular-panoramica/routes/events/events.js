@@ -151,11 +151,16 @@ function event (req, res){
         if (event) {
             voteCounts(event, function (err) {
                 if (err) {
+                    console.log(err)
                 }
                 else {
+
                     res.render('events/event', {
-                        name: event.name, shortname: event.shortname, state: event.state,
-                        phonenumber: utils.formatPhone(event.phonenumber), voteoptions: JSON.stringify(event.voteoptions)
+                        name: event.name,
+                        shortname: event.shortname,
+                        state: event.state,
+                        phonenumber: utils.formatPhone(event.phonenumber),
+                        voteoptions: JSON.stringify(event.voteoptions)
                     });
                 }
             });

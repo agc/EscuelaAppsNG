@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Votr - {{ name }} - SMS Voting</title>
+    <title>Votr - {{ name }} - SMS Votos</title>
     <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
     <link href="/stylesheets/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="/stylesheets/style.css" rel="stylesheet">
@@ -10,19 +10,19 @@
 <body>
 	<div class="container">
 		<h1>{{ name }}</h1>
-		<div><span class="cta {{ state }}">Text {num} or call </span>
-		<span class="phone {{ state }}"> {{ phonenumber }} </span>
+		<div><span class="cta {{ state }}">Text {{num }} or call </span>
+		<span class="phone {{ state }}"> {{phonenumber }} </span>
 		<span class="cta {{ state }}"> to Vote!</span></div>
-		<h2 class="{{ state }}">Voting is: {{ state }}</h2>
+		<h2 class="{{ state }}">Votación está : {{ state }}</h2>
 		<div id="chart" style="min-width: 400px; height: 500px; margin: 0 auto"></div>
 		<div class="footer">
 		Ejemplo de aplicación angular couchdb<br>
 		Votar mediante un POST a http://localhost:3000/events/vote/sms <br>
 		con parametros To +15555551212  From xxxxx Body 1 2 o 3
     </div>
-	<script src="/socket.io/socket.io.js"></script>
+
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="/javascripts/highcharts.js"></script>
+	<script src="/lib/highcharts.js"></script>
 	<script>
 	String.prototype.unescapeHtml = function () {
     	var temp = document.createElement("div");

@@ -37,11 +37,11 @@ app.config(function($httpProvider) {
 });  
 
 app.factory('EventService', function($resource) {
-  return $resource('/events/api/list/:id');
+  return $resource('/events/api/:id');
 });
 
 app.factory('SessionService', function($resource) {
-  return $resource('/admin/api/sessions');
+  return $resource('/sesiones/api/login');
 });  
 
 app.controller('LoginCtrl', function($scope, $rootScope, $location, SessionService) {
