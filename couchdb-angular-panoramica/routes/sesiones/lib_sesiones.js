@@ -1,5 +1,5 @@
 
-var sessions = require('./lib_db_sesiones')
+var sessions = require('./modelo_sesiones')
 
 
 function admin (req, res) {
@@ -13,9 +13,13 @@ function login(req, res) {
     // en caso de exito se le pasa el parametro cookie
     sessions.login(req.body.username, req.body.password, function(err, cookie) {
         if (err) {
+
+            console.log("llega error")
             res.json(401, {error: true});
+
         }
         else {
+            console.log("llega")
             res.cookie(cookie);
             res.send(req.body);
         }

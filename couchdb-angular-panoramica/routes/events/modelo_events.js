@@ -1,13 +1,26 @@
 // query events based on either shortname or phonenumber (both unique keys)
 
 var config                      = require('./config')
-    , utils                     = require('./utils')
+
     , _und                      = require('underscore')
-    , db                        = require('nano')(config.couchdb.url)
+
     , eventsCache               = {}
     , secondsToInvalidateEvents = config.couchdb.secondsToInvalidateEvents
     , votesCache                = {}
     , secondsToFlushVotes       = config.couchdb.secondsToFlushVotes
+
+
+function getDb(cookie) {
+    var params = {};
+    if (cookie) {
+        params.url = config.couchdb.url;
+        params.cookie = 'AuthSession='+cookie;
+    }
+    else {
+        params.url = config.couchdb.url;
+    }
+    return require('nano')(params);
+}
 
 // El voto se guarda en la estructura de datos votesCache
 // el _id del voto se compone del event_id y del numero de telefono personal
@@ -38,7 +51,7 @@ function flushVotes() {
 
         if (votesToSave.length > 0) {
 
-            db.bulk({docs: votesToSave}, function(err, body) {
+            getDb().bulk({docs: votesToSave}, function(err, body) {
                 if (err) {
                     console.log("Failed to save votes, popping them back on the cache");
                     votesToSave.forEach(function(v) {
@@ -71,7 +84,7 @@ function findBy(view, params, callback) {
         callback(null, event);
     }
     else {
-        db.view('view', view, params, function (err, body) { //event creo que le he llamado view
+        getDb().view('view', view, params, function (err, body) { //event creo que le he llamado view
             if (err) {
                 console.log(err);
                 callback(err, null);
@@ -106,7 +119,7 @@ function findByPhonenumber(phonenumber, callback) {
 }
 
 function voteCounts(event, callback) {
-    db.view('view', 'all', {startkey: [event._id], endkey: [event._id, {}, {}], group_level: 2}, function(err, body) {
+    getDb().view('view', 'all', {startkey: [event._id], endkey: [event._id, {}, {}], group_level: 2}, function(err, body) {
         if (err) {
             callback(err);
         }
@@ -122,7 +135,7 @@ function voteCounts(event, callback) {
 }
 
 function list(cookie, callback) {
-    db.view('view', 'list', function(err, body) {
+    getDb(cookie).view('view', 'list', function(err, body) {
         if (err) {
             console.log(err);
             callback(err);
@@ -134,90 +147,30 @@ function list(cookie, callback) {
     });
 }
 
-function listaEventos(req, res) {
-    list(req.cookies['AuthSession'], function(err, list) {
-        if (err) {
-            res.send(401, JSON.stringify({error: true}));
-        }
-        else {
-            res.send(list);
-        }
+function save (cookie, event, callback) {
+    if (!event._id) { event._id = 'event:' + event.shortname }
+    if (!event.type) { event.type = 'event' }
+
+    getDb(cookie).insert(event, function(err, body) {
+        callback(err, body);
     });
 }
 
-function event (req, res){
-
-    findBy('all', {key: ['event:'+req.params.shortname], reduce:false}, function(err, event) {
-        if (event) {
-            voteCounts(event, function (err) {
-                if (err) {
-                    console.log(err)
-                }
-                else {
-
-                    res.render('events/event', {
-                        name: event.name,
-                        shortname: event.shortname,
-                        state: event.state,
-                        phonenumber: utils.formatPhone(event.phonenumber),
-                        voteoptions: JSON.stringify(event.voteoptions)
-                    });
-                }
-            });
-        }
-        else {
-            res.statusCode = 404;
-            res.send('We could not locate your event');
-        }
+function destroy(cookie, id, rev, callback) {
+    getDb(cookie).destroy(id, rev, function(err, body) {
+        callback(err, body);
     });
-};
-
-function voteSMS(request, response) {
-
-    var body    = request.param('Body').trim();
-    var to      = request.param('To');
-    var from    = request.param('From');
-
-    findByPhonenumber(to, function(err, event) {
-
-        if (err) {
-            console.log(err);
-            response.send('<Response></Response>');
-        }
-        else if (event.state == "off") {
-            response.send('<Response><Sms>Voting is now closed.</Sms></Response>');
-        }
-        else if (!utils.testint(body)) {
-            console.log('Bad vote: ' + event.name + ', ' + from + ', ' + body);
-            response.send('<Response><Sms>Sorry, invalid vote. Please text a number between 1 and '+ event.voteoptions.length +'</Sms></Response>');
-        }
-        else if (utils.testint(body) && (parseInt(body) <= 0 || parseInt(body) > event.voteoptions.length)) {
-            console.log('Bad vote: ' + event.name + ', ' + from + ', ' + body + ', ' + ('[1-'+event.voteoptions.length+']'));
-            response.send('<Response><Sms>Sorry, invalid vote. Please text a number between 1 and '+ event.voteoptions.length +'</Sms></Response>');
-        }
-        else {
-            var vote = parseInt(body);
-
-            saveVote(event, vote, from);
-            console.log('Accepting vote: ' + event.name + ', ' + from);
-            response.send('<Response></Response>');
-        }
-    });
+}
 
 
-};
+exports.list=list //
+exports.voteCounts=voteCounts //
+exports.findByPhonenumber=findByPhonenumber
+exports.findBy=findBy //
+exports.invalidEvents=invalidEvents
+//exports.flushVotes=flushVotes
+exports.saveVote=saveVote
 
-function eventById(req,res) {}
-
-function destroyEvent(req,res) {}
-
-function saveEvent(req,res) {}
-
-exports.voteSMS = voteSMS
-exports.event   = event
-exports.list= listaEventos
-
-exports.eventById=eventById
-exports.destroyEvent=destroyEvent
-exports.saveEvent=saveEvent
+exports.save=save
+exports.destroy=destroy
 
