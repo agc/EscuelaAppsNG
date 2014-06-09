@@ -2,6 +2,13 @@ module.exports=function(app,vistas) {
 
 app.use('/',         require('./raiz/index')(vistas))
 
+// Aplicación wines mysql
+
+app.use('/api/wines',   require('./wines/rutas_wine'));     //prefijo asociado a las rutas
+app.use('/api/users',   require('./wines/rutas_user'));     //prefijo asociado a las rutas
+
+
+
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
