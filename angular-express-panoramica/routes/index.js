@@ -5,7 +5,7 @@ app.use('/',         require('./raiz/index')(vistas))
 // Aplicación wines mysql
 
 app.use('/api/wines',   require('./wines/rutas_wine'));     //prefijo asociado a las rutas
-app.use('/api/users',   require('./wines/rutas_user'));     //prefijo asociado a las rutas
+app.use('/api/users',   require('./users/rutas_user'));     //prefijo asociado a las rutas
 
 
 

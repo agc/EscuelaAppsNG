@@ -1,0 +1,38 @@
+
+
+<!DOCTYPE HTML>
+<html >
+<head>
+    <title>Angular DEMO</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+</head>
+
+<body ng-app="ngdemoApp">
+
+<ul class="menu">
+    <li><a href="#/dummy">dummy</a></li>
+    <li><a href="#/user-list">user-list</a></li>
+    <li><a href="#/user-detail/1">user-detail/1</a></li>
+    <li><a href="#/user-creation">user-creation</a></li>
+</ul>
+
+
+<div class="container">
+    <ng-view></ng-view>
+</div>
+
+<script src="/lib/jquery/jquery.js"></script>
+
+<!-- Como la pagina se sirve desde un directorio, es necesario usuar rutas absolutas -->
+<script src="/lib/angular/angular.min.js"></script>
+<script src="/lib/angular/angular-resource.min.js" ></script>
+<script src="/lib/angular/angular-route.min.js" ></script>
+<script src="/lib/angular/angular-cookies.js" ></script>
+
+<script src="/js/user/services.js"></script>
+<script src="/js/user/controllers.js"></script>
+<script src="/js/user/app.js" ></script>
+</body>
+
+</html>

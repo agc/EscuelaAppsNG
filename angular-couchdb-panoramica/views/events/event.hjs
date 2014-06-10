@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Votr - {{ name }} - SMS Votos</title>
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheets/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="/stylesheets/style.css" rel="stylesheet">
+</head>
+<body>
+	<div class="container">
+		<h1>{{ name }}</h1>
+		<div><span class="cta {{ state }}">Text {{num }} or call </span>
+		<span class="phone {{ state }}"> {{phonenumber }} </span>
+		<span class="cta {{ state }}"> to Vote!</span></div>
+		<h2 class="{{ state }}">Votación está : {{ state }}</h2>
+		<div id="chart" style="min-width: 400px; height: 500px; margin: 0 auto"></div>
+		<div class="footer">
+		Ejemplo de aplicación angular couchdb<br>
+		Votar mediante un POST a http://localhost:3000/events/vote/sms <br>
+		con parametros To +15555551212  From xxxxx Body 1 2 o 3
+    </div>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="/lib/highcharts.js"></script>
+	<script>
+	String.prototype.unescapeHtml = function () {
+    	var temp = document.createElement("div");
+    	temp.innerHTML = this;
+    	var result = temp.childNodes[0].nodeValue;
+    	temp.removeChild(temp.firstChild);
+    	return result;
+	}
+
+
+
+	// current state of the voting at load time, updated via websockets
+	var data = "{{ voteoptions }}";
+
+	var voting_string = data.unescapeHtml();
+
+	var voting = JSON.parse(voting_string);
+	// our live chart
+	var chart;
+
+	// Attach a handler to the window load event.
+	$(document).ready(function() {
+
+		var chartdata = [],
+		    labels = [];
+
+		voting.forEach(function(vo, i) {
+			// the number of votes
+			chartdata.push(vo.votes);
+			// the label for this data point
+			labels.push(vo.name+' - '+(i+1));
+		});
+
+		chart = new Highcharts.Chart({
+		    chart: {
+		        renderTo: 'chart',
+		        type: 'bar'
+		    },
+
+		    title: {
+		        text: 'Voice and SMS Voting'
+		    },
+
+		    subtitle: {
+		        text: 'Versión simplificada de la original'
+		    },
+
+		    xAxis: {
+		        categories: labels,
+		        title: {
+		            text: null
+		        },
+		        labels: {
+		        	style: {
+		        		fontSize: '1.3em',
+		        		fontWeight: 'bold'
+		        	}
+		        }
+		    },
+
+		    yAxis: {
+		        min: 0,
+		        title: {
+		            text: 'Votes',
+		            align: 'high'
+		        },
+		    },
+
+		    tooltip: {
+		        formatter: function() {
+		            return ''+
+		                'Text "'+(this.point.x+1)+'" to vote for '+this.x;
+		        }
+		    },
+
+		    plotOptions: {
+		        bar: {
+		            dataLabels: {
+		                enabled: true,
+		                style: {
+		                	fontSize: '1.3em',
+		                	fontWeight: 'bold'
+		                }
+		            }
+		        }
+		    },
+
+		    legend: {
+		        enabled: false
+		    },
+
+		    credits: {
+		        enabled: false
+		    },
+
+		    series: [{name: 'Votes',data: chartdata}]
+		});
+
+
+
+	});
+
+	</script>
+
+
+</body>
+</html>
