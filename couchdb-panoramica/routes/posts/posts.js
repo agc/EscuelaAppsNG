@@ -1,6 +1,6 @@
 var express             = require('express');
 var router              = express.Router();
-var posts               = require('./lib/lib_posts_couchdb')
+var posts               = require('./lib_posts_couchdb')
 
 
 

@@ -18,7 +18,7 @@
     <h2>Proyectos JavaScript con CouchDB</h2>
     <div ng-view></div>
 
-    <!-- CACHE FILE: list.html -->
+
     <script type="text/ng-template" id="list.html">
         <input type="text" ng-model="search" class="search-query" placeholder="Search">
         <table>
@@ -30,6 +30,7 @@
             </tr>
             </thead>
             <tbody>
+
             <tr ng-repeat="project in projects.rows | filter:search | orderBy:'doc.name'">
                 <td><a href="{{project.doc.site}}" target="_blank">{{project.doc.name}}</a></td>
                 <td>{{project.doc.description}}</td>
@@ -43,8 +44,6 @@
     </script>
 
 
-
-    <!-- CACHE FILE: detail.html -->
     <script type="text/ng-template" id="detail.html">
         <form name="myForm">
             <div class="control-group" ng-class="{error: myForm.name.$invalid}">
@@ -76,12 +75,12 @@
     </script>
 </div>
 
-<script src="lib/angular/angular.min.js"></script>
-<script src="lib/angular-resource/angular-resource.min.js" ></script>
-<script src="lib/angular-route/angular-route.min.js" ></script>
-<script src="lib/angular-cookies/angular-cookies.js" ></script>
+<script src="/lib/angular/angular.min.js"></script>
+<script src="/lib/angular/angular-resource.min.js" ></script>
+<script src="/lib/angular/angular-route.min.js" ></script>
+<script src="/lib/angular/angular-cookies.js" ></script>
 
-<script src="js/proyectoscouchdb/app.js" ></script>
+<script src="/js/proyectos.js" ></script>
 <!--
 <script src="js/demo/services.js"></script>
 <script src="js/demo/controllers.js"></script>

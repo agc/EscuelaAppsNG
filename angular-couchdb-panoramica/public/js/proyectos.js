@@ -59,8 +59,7 @@ angular.module('CouchDB', ['ngResource']).
         );
 
         ProjectCouch.prototype.update = function(cb) {
-            return ProjectCouch.update({q: this._id},
-                this, cb);
+            return ProjectCouch.update({q: this._id}, this, cb);
         };
 
         ProjectCouch.prototype.destroy = function(cb) {
