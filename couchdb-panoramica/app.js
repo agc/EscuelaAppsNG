@@ -7,6 +7,10 @@ var bodyParser      = require('body-parser');
 var consolidar      = require('consolidate')
 var app             = express();
 
+process.on('uncaughtException', function (error) {
+    console.log(error.stack);
+});
+
 app.set('views', path.join(__dirname, 'views'));
 
 app.engine('ejs', consolidar.ejs)

@@ -7,6 +7,13 @@ block content
         p Phone No:
         input#body(type="text" , name="phone")
         p: button(type="submit") Add New Contact
+    h1 Actualizar Contacto
+        form(method="POST" , action="/tutorial/update_contact")
+            p Name:
+            input#title(type="text" , name="name")
+            p Phone No:
+            input#body(type="text" , name="phone")
+            p: button(type="submit") Add New Contact
     h1 Add new Database this is for example.In real life app databse is already set up
     form(method="POST" , action="/tutorial/createdb")
         p Database name:
