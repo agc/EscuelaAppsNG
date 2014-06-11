@@ -7,6 +7,10 @@ app.use('/',         require('./raiz/index')(vistas))
 app.use('/api/wines',   require('./wines/rutas_wine'));     //prefijo asociado a las rutas
 app.use('/api/users',   require('./users/rutas_user'));     //prefijo asociado a las rutas
 
+// Aplicacion todo mongoose
+
+app.use('/api/todos',   require('./todo/rutas_todo'))
+
 
 
 /// catch 404 and forward to error handler
