@@ -1,0 +1,41 @@
+<!doctype html >
+<html ng-app="app">
+<head>
+    <title>Restangular</title>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.15/angular.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.15/angular-route.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.15/angular-resource.js"></script>
+
+
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <script type="text/javascript" src="http://cdn.jsdelivr.net/restangular/latest/restangular.js"></script>
+
+</head>
+<body>
+<!-- http://cdnjs.com/libraries/angular.js -->
+
+<div ng-controller="IndexCtrl" ng-cloak>
+    {{prueba}}
+    <ul>
+        <li ng-repeat="person in people">{{person.name}}</li>
+    </ul>
+</div>
+
+<script>
+    var app = angular.module('app', ['restangular'])
+            .config(function(RestangularProvider) {
+                RestangularProvider.setBaseUrl('http://localhost:3000/api/');
+            });
+
+    app.controller('IndexCtrl', function($scope, Restangular) {
+        $scope.prueba="Hola";
+
+        Restangular.all('contacts').getList().then(function (data) {
+           $scope.people =data;
+
+       });
+    });
+
+</script>
+</body>
+</html>
