@@ -13,6 +13,12 @@ app.use('/api/todos',   require('./todo/rutas_todo'))
 
 app.use('/api/contacts',   require('./contacts/rutas_contacts'))
 
+app.use('/news', require('./news/rutas_news'))
+
+app.use('/api/posts', require('./news/rutas_mongoose_posts'))
+
+app.use('/api/users',require('./news/rutas_mongoose_users'))
+
 
 
 /// catch 404 and forward to error handler

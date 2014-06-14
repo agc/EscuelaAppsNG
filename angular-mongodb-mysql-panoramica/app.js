@@ -30,12 +30,24 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+
+// varios directorios publicos
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname ,'public_news')));
+
+
 
 
 app.use(allowCrossDomain)
 
 var vistas_publicas     =path.join(__dirname,'/public/vistas/')
+
+app.use(function(req, res, next) {
+
+    console.log('Se ha realizado una operación.');
+    next();
+});
+
 
 require('./routes')(app,vistas_publicas)
 
