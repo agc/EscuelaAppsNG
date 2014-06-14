@@ -34,6 +34,7 @@ app.use(cookieParser());
 // varios directorios publicos
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname ,'public_news')));
+app.use(express.static(path.join(__dirname ,'public_motoads')));
 
 
 

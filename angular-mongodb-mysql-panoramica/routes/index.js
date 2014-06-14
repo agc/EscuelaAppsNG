@@ -1,23 +1,29 @@
 module.exports=function(app,vistas) {
 
-app.use('/',         require('./raiz/index')(vistas))
+// se usa solo con la página principal index.html en ella, los enlaces a otras
+// usan la ruta completa
+
+app.use('/',                require('./raiz/index')(vistas))
 
 // Aplicación wines mysql
 
-app.use('/api/wines',   require('./wines/rutas_wine'));     //prefijo asociado a las rutas
-app.use('/api/users',   require('./users/rutas_user'));     //prefijo asociado a las rutas
+app.use('/api/wines',       require('./wines/rutas_wine'));     //prefijo asociado a las rutas
+app.use('/api/users',       require('./users/rutas_user'));     //prefijo asociado a las rutas
 
 // Aplicacion todo mongoose
 
-app.use('/api/todos',   require('./todo/rutas_todo'))
+app.use('/api/todos',       require('./todo/rutas_todo'))
 
-app.use('/api/contacts',   require('./contacts/rutas_contacts'))
+app.use('/api/contacts',    require('./contacts/rutas_contacts'))
 
-app.use('/news', require('./news/rutas_news'))
+app.use('/news',            require('./news/rutas_news'))
 
-app.use('/api/posts', require('./news/rutas_mongoose_posts'))
+app.use('/api/posts',       require('./news/rutas_mongoose_posts'))
 
-app.use('/api/users',require('./news/rutas_mongoose_users'))
+app.use('/api/users',       require('./news/rutas_mongoose_users'))
+
+
+app.use('/motoads',         require('./motoads'))
 
 
 
