@@ -22,7 +22,12 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var users           =require('./routes/users_mongoskin')(app)
+var colecciones     =require('./routes/colecciones_mongoskin')(app)
+
 app.use('/api/mysql', mysql);
+app.use('/api/users',users)
+app.use('/colecciones',colecciones)
 
 
 
