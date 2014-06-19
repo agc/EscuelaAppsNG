@@ -5,7 +5,7 @@ var http=require('http')
 
 var app = connect()
     .use(connect.logger('dev'))
-    .use(connect.static('capitulo2'))
+    .use(connect.static('capitulo2-5'))
     .use(connect.static('./'))
     .use(function(req, res){
         res.end('hello world\n');

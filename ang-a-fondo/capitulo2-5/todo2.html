@@ -7,17 +7,13 @@
     <script src="lib/angular/angular.js"></script>
    
     <script>
+
         var model = {
             user: "Adam"            
         };
 
         var todoApp = angular.module("todoApp", []);
 
-        todoApp.run(function ($http) {
-            $http.get("todo.json").success(function (data) {
-               model.items = data;
-            });
-        });
 
         todoApp.filter("checkedItems", function () {
             return function (items, showComplete) {
@@ -32,9 +28,41 @@
             }
         });
 
-        todoApp.controller("ToDoCtrl", function ($scope) {
+        todoApp.controller("ToDoCtrl", function ($scope,$http) {
+
             $scope.todo = model;
 
+            /*
+            var promise = $http.get("todo.json");
+            promise.success(function (data) {
+                $scope.todo.items = data;
+            });
+
+
+            // recibe solo los datos, no la respuesta completa
+
+            $http.get("todo.json").success(function (data) {
+                var jsonString = angular.toJson(data);
+                console.log(jsonString);
+                $scope.todo.items = angular.fromJson(jsonString);
+            });
+
+*/
+
+
+            $http.get("todo.json").then(function (response) {
+
+                // response tiene este formato
+                // Object {data: Array[4], status: 200, headers: function, config: Object, statusText: "OK"}
+
+                $scope.todo.items = response.data;
+
+
+            }, function () {
+                $scope.todo.items = [{action: "Error",done:false}];
+            }).then(function () {
+                $scope.todo.items.push({action: "Request Complete",done:false});
+            });
             $scope.incompleteCount = function () {
                 var count = 0;
                 angular.forEach($scope.todo.items, function (item) {
