@@ -1,13 +1,18 @@
+
+// ver https://github.com/senchalabs/connect
 var connect = require('connect');
+var static= require('serve-static')
+var logger=require('morgan')
 
 var http=require('http')
 
 
 var app = connect()
-    .use(connect.logger('dev'))
-    .use(connect.static('capitulo6'))
-    .use(connect.static('./'))
-    .use(function(req, res){
+
+    app.use(logger('dev'))
+     app.use(static('capitulo7'))
+    app.use(static('./'))
+    app.use(function(req, res){
         res.end('hello world\n');
     })
 
