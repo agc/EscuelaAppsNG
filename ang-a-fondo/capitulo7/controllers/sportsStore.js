@@ -1,5 +1,18 @@
 angular.module("sportsStore")
-    .controller("sportsStoreCtrl", function ($scope) {
+    .constant("dataUrl", "http://localhost:5500/products")
+    .controller("sportsStoreCtrl", function ($scope,$http,dataUrl) {
+        $scope.data={}
+        $http.get(dataUrl)
+            .success(function (data) {
+                 $scope.data.products = data; //Angularjs convierte automáticamente json a javascript
+                // prueba de error
+                 //$scope.data.error={status:"Error al cargar los datos",mensaje:"Ha habido un error"}
+                // tambion cambiar dataUrl a una que no existe, por ejemplo cambio el puerto
+            })
+            .error(function (error) {
+                $scope.data.error = error;
+            });
+        /* sustituye a
         $scope.data = {
             products: [
                 { name: "Product #1", description: "A product",
@@ -11,5 +24,5 @@ angular.module("sportsStore")
                 { name: "Product #4", description: "A product",
                     category: "Category #3", price: 202 }]
 
- };
+ }; */
     });
