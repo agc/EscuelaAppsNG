@@ -11,6 +11,9 @@ var request = require('request');
 var xml2js = require('xml2js');
 var _ = require('lodash');
 
+
+var agenda = require('agenda')({ db: { address: 'localhost:27017/test' } });
+
 var showSchema = new mongoose.Schema({
     _id: Number,
     name: String,
@@ -164,7 +167,8 @@ app.post('/api/shows', function (req, res, next) {
                 }
                 return next(err);
             }
-            var alertDate = Date.create('Next ' + show.airsDayOfWeek + ' at ' + show.airsTime).rewind({ hour: 2});
+           // var alertDate = Date.parse('Next ' + show.airsDayOfWeek + ' at ' + show.airsTime).rewind({ hour: 2});
+            var alertDate = 'Next ' + show.airsDayOfWeek + ' at ' + show.airsTime
             agenda.schedule(alertDate, 'send email alert', show.name).repeatEvery('1 week');
             res.send(200);
         });
