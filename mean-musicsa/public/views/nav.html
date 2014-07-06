@@ -1,0 +1,21 @@
+<div class='navbar navbar-default navbar-static-top' role='navigation' bs-navbar ng-controller='NavCtrl'>
+	<div class='navbar-header'>
+		<a class='navbar-brand' ui-sref='home'>
+			<span class='glyphicon glyphicon-film'></span> TV<strong>Trackr</strong>
+		</a>
+	</div>
+	<ul class='nav navbar-nav'>
+		<li data-match-route='/$'><a ui-sref='home'>Home</a></li>
+		<li data-match-route='/add'><a ui-sref='shows.add'>Add</a></li>
+	</ul>
+
+	<ul class='nav navbar-nav pull-right' ng-if='!currentUser'>
+		<li data-match-route='/login'><a href='/login'>Login</a></li>
+		<li data-match-route='/signup'><a href='/signup'>Signup</a></li>
+	</ul>
+
+	<ul class='nav navbar-nav pull-right' ng-if='currentUser'>
+		<li class='navbar-text' ng-bind='currentUser.email'></li>
+		<li><a href='javascript:void(0)' ng-click='logout()'>Logout</a></li>
+	</ul>
+</div>

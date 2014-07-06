@@ -1,0 +1,16 @@
+<div class='row'>
+	<div class='col-md-3 col-md-offset-1'>
+		<h4>Genres</h4>
+		<ul>
+			<li ng-repeat='genre in genres'>
+				<span ng-click='filterByGenre(genre)'>{{ genre }}</span>
+			</li>
+		</ul>
+	</div>
+	<div class='col-md-8'>
+		<h3>{{ headingTitle }}</h3>
+		<div ng-repeat='show in shows'>
+			{{ show }}
+		</div>
+	</div>
+</div>

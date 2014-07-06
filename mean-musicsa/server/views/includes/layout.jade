@@ -1,0 +1,25 @@
+doctype html
+html(ng-app='tvtrackr')
+	head
+		//- enable HTML5 History API in angular
+		base(href='/')
+		meta(charset='utf-8')
+		meta(http-equiv='X-UA-Compatible', content='IE=edge')
+		meta(name='viewport', content='width=device-width, initial-scale=1')
+		title tvTrackr
+
+		link(href='favicon.png', rel='shortcut icon', type='image/png')
+		
+		<!-- inject:css -->
+		link(rel='stylesheet', href='/bower_components/toastr/toastr.css')
+		link(rel='stylesheet', href="/bower_components/bootstrap/dist/css/bootstrap.css")
+		<!-- endinject -->
+		//- link(rel='stylesheet', href='/bower_components/ionic/ionic.css')
+
+		//- Custom styles
+		link(rel='stylesheet', href='/stylesheets/style.css')
+	body
+		//- include information about logged in user
+		include currentUser
+		block main-content
+		include scripts
