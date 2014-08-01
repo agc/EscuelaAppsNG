@@ -1,0 +1,38 @@
+<h1>Lección 2</h1>
+<div>
+    <h3>Aspectos</h3>
+    <p>Contextos</p>
+
+</div>
+
+<ul>
+    {{#each tours}}
+    {{! En este nuevo bloque el contexto ha cambiado. Dentro de tours
+        En el if todavía no se ha abiero un nuevo contexto. Pero dentro del bloque if
+        estamos un nivel mas adentro, nuevo contexto. Aunque es nuevo contexto es una copia del padre
+        todavía debemos salir dos veces para alcanzar el nivel exterior
+    }}
+        <li>
+            {{name}} - {{price}}
+            {{#if ../currencies}}
+                ({{../../currency.abbrev}})
+            {{/if}}
+        </li>
+    {{/each}}
+</ul>
+{{#unless currencies}}
+    <p>All prices in {{currency.name}}.</p>
+{{/unless}}
+{{#if specialsUrl}}
+{{! I'm in a new block...but the context hasn't changed (sortof) }}
+    <p>Check out our <a href="{{specialsUrl}}">specials!</p>
+{{else}}
+    <p>Please check back often for specials.</p>
+{{/if}}
+<p>
+    {{#each currencies}}
+        <a href="#" class="currency">{{.}}</a>
+    {{else}}
+        Unfortunately, we currently only accept {{currency.name}}.
+    {{/each}}
+</p>
